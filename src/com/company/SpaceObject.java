@@ -1,18 +1,40 @@
 package com.company;
 
-public interface SpaceObject {
+public class SpaceObject {
 
+    private
 
-    // Accellerate Object in its current direction
-    public void Acellerate();
+    public void collide(){}
 
+    public void acellerate(){}
 
-    // Decellerate Object in its current direction
-    public void Decellerate();
-
-    public void explode();
-
-    public void impact();
-
-    public Coordinates getCoordinates();
 }
+
+class Asteroid extends SpaceObject{
+
+}
+
+class Shot extends SpaceObject{
+
+}
+
+class Spaceship extends SpaceObject{
+
+    private int nrOfShots;
+
+    public void rotate(){}
+
+}
+
+class Player extends Spaceship{
+
+    public void hyperDrive(){
+
+    }
+}
+
+/*
+class UFO extends Spaceship{
+
+}
+ */
