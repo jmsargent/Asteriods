@@ -13,8 +13,9 @@ public class SpaceObject {
 }
 
 class Asteroid extends SpaceObject{
-
     private int size;
+
+    private void separate(){   }
 
 }
 
