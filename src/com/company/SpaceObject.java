@@ -10,6 +10,9 @@ public class SpaceObject {
     public double posY;
 
 
+}
+
+
  /*   // Accellerate Object in its current direction
     public void Acellerate(x,y);
 
@@ -25,4 +28,3 @@ public class SpaceObject {
 
 
   */
-}
