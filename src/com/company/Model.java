@@ -5,13 +5,10 @@ import java.util.List;
 public class Model extends Controller{
 
 
-    private Player player;
+    public Player player;
     private List<Asteroid> ass;
 
-    public void addAss(){
-        Asteroid ass = new Asteroid(0,0,3);
-        System.out.println("I just spawned something");
-    }
+
 
     private double x, y;
 
@@ -20,16 +17,8 @@ public class Model extends Controller{
         this.y = y;
     }
 
-    //public getShip(){
-
-
-    //}
-
-
-    public int GetIntX(){
-        return (int)x;
+    public void getShip(){
+        player = super.p;
     }
-    public int GetIntY(){
-        return (int)y;
-    }
+
 }

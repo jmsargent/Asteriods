@@ -10,20 +10,25 @@ public class View extends JFrame {
     //This is where we paint stuff
     private Controller c = new Controller();
     private Player p = new Player((double) this.getWidth() / 2, (double) this.getHeight() / 2, 1);
-    JPanel jp = new JPanel();
-    JComponent draw = new draw2D();
-
+    JPanel draw = new draw2D();
+    Model qq = new Model();
 
     //init controller to be available for our frame
-    public void View(Controller k, draw2D draw) {
+    public void View(Controller k, draw2D draw, Model qq) {
         this.c = k;
         this.draw = draw;
+        this.qq = qq;
+    }
+
+    public int getFrameSizeHeight() {
+        System.out.println(getHeight());
+        return getHeight();
     }
 
     //Hur ofta som bräder uppdateras (nu 45 FPS)
     Timer t = new Timer(22, new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-            jp.repaint();
+            c.repaint();
         }
     });
 
@@ -32,54 +37,25 @@ public class View extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setSize(600, 600);
         this.setLocation(20, 20);
-        this.add(jp);
-        jp.setBackground(Color.black);
-        jp.setSize(500, 500);
-        jp.setVisible(true);
+        this.add(c);
+        this.add(draw);
+        //needed?
+        //this.pack();
+        this.setVisible(true);
+        draw.setBackground(Color.black);
 
-
-        jp.repaint();
-        jp.addKeyListener(c);
-        this.addPlayer(p);
-
+        //c.setVisible(true);
+        this.addKeyListener(c);
+        //c.addPlayer(qq.p);
+        c.addAss();
         t.start();
-    }
-
-    public void addPlayer(Player p) {
-        this.p = p;
-        p.posX = (double) this.getWidth() / 2;
-        p.posY = (double) this.getHeight() / 2;
-        p.life = 1;
-        p.color = Color.cyan;
-        System.out.println("I'm here!");
-
-    }
-
-    public class draw2D extends JComponent {
-        private static final long serialVersionUID = 1L;
-
-        draw2D() {
-            setPreferredSize(new Dimension(600, 600));
-        }
-
-    }
-
-
-    public void paintComponent(Graphics g) {
-        super.paintComponents(g);
-        g.fillRect(200, 62, 30, 10);
-        g.setColor(Color.red);
-    }
-    /*Polygon polygon = new Polygon(xValue, yValue,int x);
-
-
-    jp.drawPolygon(p.xPoints, p.yPoints, 4);
-    jp.setColor(Color.red);
-*/
-
-    private void DrawAsteroid(Asteroid ass, Graphics g) {
 
 
     }
+
+    public void paintAss() {
+
+    }
+
 
 }
