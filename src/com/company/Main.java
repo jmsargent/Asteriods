@@ -6,8 +6,9 @@ public class Main {
 
     public static void main(String[] args) {
 	// write your code here
-        View view = new View();
         Model model = new Model();
+        View view = new View(model);
+
 
         Controller controller = new Controller(view, model);
     }

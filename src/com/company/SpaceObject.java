@@ -7,12 +7,17 @@ public class SpaceObject {
 
     /* TODO
     1) fixa avrundning med polygon i player
+    1) Vi har redan updatePos i spaceObj, behöver inte i player
      */
 
     private Polygon blueprint;
     private int life;
     private double posX;
 
+    public void updatePos(){
+        this.posX = this.posX + this.dx;
+        this.posY = this.posY + this.dy;
+    }
 
 
     public Polygon getBlueprint() {
@@ -22,8 +27,6 @@ public class SpaceObject {
     public void setBlueprint(Polygon blueprint) {
         this.blueprint = blueprint;
     }
-
-
 
     public int getLife() {
         return life;
@@ -79,7 +82,14 @@ public class SpaceObject {
 }
 
 class Asteroid extends SpaceObject{
-    int radi ;
+
+    public Asteroid(int x, int y, int dx, int dy){
+        this.setPosX(x);
+        this.setPosY(y);
+
+        this.setDx(dx);
+        this.setDy(dy);
+    }
 }
 
 class Shot extends SpaceObject{
@@ -100,16 +110,21 @@ class Player extends Spaceship{
         this.setPosX(posX);
         this.setPosY(posY);
 
+        this.setDx(0);
+        this.setDy(0);
+
         this.setLife(1);
         updatePlayerPolygon();
     }
 
-    private void updatePlayerPos(){
+    public void updatePlayerPos(){
         setPosX(getDx() + getPosX());
         setPosY(getDy() + getPosY());
+
+        updatePlayerPolygon();
     }
 
-    public void updatePlayerPolygon(){
+    private void updatePlayerPolygon(){
 
         Polygon p = new Polygon();
 
