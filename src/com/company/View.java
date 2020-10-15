@@ -30,6 +30,10 @@ public class View extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    public void updateCanvas(){
+        this.space.repaint();
+    }
+
     private class Space extends JPanel{
 
         private List<Polygon> toDraw = new LinkedList<>();
@@ -50,7 +54,10 @@ public class View extends JFrame {
             super.setBackground(Color.BLACK);
             g.setColor(Color.WHITE);
             g.drawOval(50,50,50,50);
+            g.setColor(Color.RED);
+            g.fillPolygon(model.getP1().getBlueprint());
 
+            g.setColor(Color.GRAY);
             while (toDrawIt.hasNext()){
                 g.fillPolygon(toDrawIt.next());
             }

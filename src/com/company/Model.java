@@ -12,6 +12,15 @@ public class Model {
 
     private List<SpaceObject> nonPlayerSpaceObjects;
     private Player p1;
+
+    public Player getP1() {
+        return p1;
+    }
+
+
+
+
+
     public Model(){
 
         // initiate player in middle of screen
@@ -26,7 +35,8 @@ public class Model {
       */
     public void tick(){
         updateObjectPositioning();
-
+        p1.setDy(p1.getDy() + 0.01);
+        System.out.println(p1.getPosY());
     }
 
     private void updateObjectPositioning(){
@@ -36,5 +46,4 @@ public class Model {
             nonPlayerSpaceObject.updatePos();
         }
     }
-
 }

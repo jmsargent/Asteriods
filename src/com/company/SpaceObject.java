@@ -7,7 +7,9 @@ public class SpaceObject {
 
     /* TODO
     1) fixa avrundning med polygon i player
-    1) Vi har redan updatePos i spaceObj, behöver inte i player
+    2) Vi har redan updatePos i spaceObj, behöver inte i player
+    3) fixa grafisk model för spaceObjects
+    4) Fixa avrundning i polygon med spaceObjects
      */
 
     private Polygon blueprint;
@@ -15,8 +17,43 @@ public class SpaceObject {
     private double posX;
 
     public void updatePos(){
+
         this.posX = this.posX + this.dx;
         this.posY = this.posY + this.dy;
+
+
+        if(this.posX > 609)
+            this.posX = -9;
+        if(this.posX < -9)
+            this.posX = 609;
+
+        if(this.posY > 609)
+            this.posY = -9;
+        if(this.posY < -9)
+            this.posY = 609;
+
+
+
+        updatePolygon();
+    }
+
+    private void updatePolygon(){
+        Polygon p = new Polygon();
+
+        p.addPoint((int)this.posX-3,(int) this.posY - 1);
+        p.addPoint((int)this.posX-1,(int) this.posY - 1);
+        p.addPoint((int)this.posX-1,(int) this.posY - 3);
+        p.addPoint((int)this.posX+1,(int) this.posY - 3);
+        p.addPoint((int)this.posX+1,(int) this.posY - 1);
+        p.addPoint((int)this.posX+3,(int) this.posY - 1);
+        p.addPoint((int)this.posX+3,(int) this.posY + 1);
+        p.addPoint((int)this.posX+1,(int) this.posY + 1);
+        p.addPoint((int)this.posX+1,(int) this.posY + 3);
+        p.addPoint((int)this.posX-1,(int) this.posY + 3);
+        p.addPoint((int)this.posX-1,(int) this.posY + 1);
+        p.addPoint((int)this.posX-3,(int) this.posY + 1);
+
+        this.blueprint = p;
     }
 
 
@@ -129,8 +166,9 @@ class Player extends Spaceship{
         Polygon p = new Polygon();
 
         p.addPoint( (int) this.getPosX(),(int) this.getPosY() + 10);
-        p.addPoint( (int) this.getPosX() - 10, (int) this.getPosY() - 10);
-        p.addPoint( (int) this.getPosX() + 10, (int) this.getPosY() + 10);
+        p.addPoint( (int) this.getPosX() - 8, (int) this.getPosY() - 10);
+        p.addPoint( (int) this.getPosX(), (int) this.getPosY()-5);
+        p.addPoint( (int) this.getPosX() + 8, (int) this.getPosY() - 10);
 
         this.setBlueprint(p);
     }
