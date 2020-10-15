@@ -4,8 +4,26 @@ import java.awt.*;
 
 public class SpaceObject {
 
+
+    /* TODO
+    1) fixa avrundning med polygon i player
+     */
+
+    private Polygon blueprint;
     private int life;
     private double posX;
+
+
+
+    public Polygon getBlueprint() {
+        return blueprint;
+    }
+
+    public void setBlueprint(Polygon blueprint) {
+        this.blueprint = blueprint;
+    }
+
+
 
     public int getLife() {
         return life;
@@ -77,9 +95,35 @@ class Spaceship extends SpaceObject{
 
 class Player extends Spaceship{
 
+
+    public Player(int posX, int posY){
+        this.setPosX(posX);
+        this.setPosY(posY);
+
+        this.setLife(1);
+        updatePlayerPolygon();
+    }
+
+    private void updatePlayerPos(){
+        setPosX(getDx() + getPosX());
+        setPosY(getDy() + getPosY());
+    }
+
+    public void updatePlayerPolygon(){
+
+        Polygon p = new Polygon();
+
+        p.addPoint( (int) this.getPosX(),(int) this.getPosY() + 10);
+        p.addPoint( (int) this.getPosX() - 10, (int) this.getPosY() - 10);
+        p.addPoint( (int) this.getPosX() + 10, (int) this.getPosY() + 10);
+
+        this.setBlueprint(p);
+    }
+
+    /*
     public void hyperDrive(){
 
-    }
+    }*/
 }
 
 /*

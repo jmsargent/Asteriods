@@ -15,7 +15,7 @@ public class View extends JFrame {
         this.addKeyListener(k);
     }*/
 
-    public View(){
+    public void View(){
 
         this.space = new Space();
         this.add(space);
@@ -26,6 +26,7 @@ public class View extends JFrame {
         this.setFocusable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
 
 
 

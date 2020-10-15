@@ -8,25 +8,24 @@ import java.util.Timer;
 
 public class Controller{
 
-    Timer t ;
-    ActionListener a;
+    private javax.swing.Timer timer;
     private View view;
     private Model model;
 
     public Controller(View view, Model model){
         this.view = view;
         this.model = model;
+        timer = new javax.swing.Timer(22, al);
 
-        this.a = new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tick();
-            }
-        };
-
-        t = new Timer(22,a).start();
-        view.addKeyListener(kl);
+        timer.start();
     }
+
+    private ActionListener al = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            model.tick();
+        }
+    };
 
     private KeyListener kl = new KeyListener() {
         @Override
@@ -49,9 +48,7 @@ public class Controller{
     private void doStuff(KeyEvent e, String metodId){
         System.out.println("1");
     }
-    private void tick (){
 
-    }
 
 
 }
