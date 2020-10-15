@@ -34,37 +34,15 @@ public class View extends JFrame {
 
     private class Space extends JPanel{
 
-        private List<Polygon> paintobjects;
-        private Player player = new Player();
+
 
         @Override
         protected void paintComponent(Graphics g) {
 
             super.paintComponent(g);
-
-
-            drawGraphicObjects(g);
-
+            super.setBackground(Color.BLACK);
+            g.setColor(Color.WHITE);
+            g.drawOval(50,50,50,50);
         }
-
-
-
-        private void drawGraphicObjects(Graphics g){
-            if(paintobjects.size() > 0){
-                for (int i = 0; i <paintobjects.size(); i++) {
-                    g.fillPolygon(paintobjects.get(i));
-                }
-            }
-        }
-
-        private void addGraphicObjects(Polygon p){
-            paintobjects.add(p);
-        }
-
-        public void storeGraphics(int xPoints[], int yPoints[], int nrOfPoints){
-            Polygon p = new Polygon(xPoints,yPoints,nrOfPoints);
-            addGraphicObjects(p);
-        }
-
     }
 }
