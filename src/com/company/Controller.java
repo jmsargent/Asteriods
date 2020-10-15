@@ -5,7 +5,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.sql.SQLOutput;
 
-public class Controller implements KeyListener{
+public class Controller {
 
     private Model model;
     private View view;

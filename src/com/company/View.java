@@ -7,8 +7,6 @@ import java.awt.event.KeyListener;
 
 public class View extends JFrame {
 
-
-
     public View() {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setWindowSize();
