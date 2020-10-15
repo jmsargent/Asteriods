@@ -33,7 +33,7 @@ public class Controller{
         public void keyTyped(KeyEvent e) {
             doStuff(e, "keyTyped");
         }
-
+        kl.
         @Override
         public void keyPressed(KeyEvent e) {
             doStuff(e, "keyTyped");

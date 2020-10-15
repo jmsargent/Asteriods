@@ -158,6 +158,17 @@ class Player extends Spaceship{
         setPosX(getDx() + getPosX());
         setPosY(getDy() + getPosY());
 
+
+        if(this.getPosX() > 609)
+            this.setPosX(-9);
+        if(this.getPosX() < -9)
+            this.setPosX(609);
+
+        if(this.getPosY() > 609)
+            this.setPosY(-9);
+        if(this.getPosY() < -9)
+            this.setPosY(609);
+
         updatePlayerPolygon();
     }
 
