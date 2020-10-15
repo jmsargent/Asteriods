@@ -8,6 +8,13 @@ public class Controller {
     private View view;
     private Model model;
 
+    public Controller(View view, Model model){
+        this.view = view;
+        this.model = model;
+
+        view.addKeyListener(kl);
+    }
+
     private KeyListener kl = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
@@ -25,9 +32,6 @@ public class Controller {
         }
     };
 
-    public Controller(View view, Model model){
-
-    }
 
     private void doStuff(KeyEvent e, String metodId){
         System.out.println("1");

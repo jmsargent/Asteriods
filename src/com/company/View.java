@@ -11,9 +11,12 @@ public class View extends JFrame {
     private Space space;
     private KeyListener k;
 
-    public View (KeyListener k){
+   /* public void setKeyListener(KeyListener k){
+        this.addKeyListener(k);
+    }*/
 
-        this.k = k;
+    public View(){
+
         this.space = new Space();
         this.add(space);
 
@@ -23,6 +26,8 @@ public class View extends JFrame {
         this.setFocusable(true);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
+
+
 
 
 
@@ -45,15 +50,15 @@ public class View extends JFrame {
 
 
         private void drawGraphicObjects(Graphics g){
-            for (int i = 0; i <paintobjects.size(); i++) {
-                g.fillPolygon(paintobjects.get(i));
+            if(paintobjects.size() > 0){
+                for (int i = 0; i <paintobjects.size(); i++) {
+                    g.fillPolygon(paintobjects.get(i));
+                }
             }
         }
 
         private void addGraphicObjects(Polygon p){
-
             paintobjects.add(p);
-
         }
 
         public void storeGraphics(int xPoints[], int yPoints[], int nrOfPoints){
