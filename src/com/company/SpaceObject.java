@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 
-public class SpaceObject extends JPanel {
+public class SpaceObject{
 
     public Color color;
     //Life for ship, will convert also "convert" to size of Asteroids
@@ -19,7 +19,7 @@ public class SpaceObject extends JPanel {
     public double getPosY(){ return posY; }
     public double getLife(){ return life; }
 
-    public void moveAss(){
+    public void moveSO(){
 
 
     }

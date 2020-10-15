@@ -9,6 +9,8 @@ public class draw2D extends JPanel {
     draw2D() {
         repaint();
         setPreferredSize(new Dimension(600, 600));
+
+
     }
 
 
@@ -18,7 +20,7 @@ public class draw2D extends JPanel {
 
         g.setColor(Color.red);
 
-        // g.fillPolygon();
+        g.fillPolygon();
 
 
     }
