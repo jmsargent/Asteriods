@@ -45,9 +45,10 @@ public class Controller{
         }
     };
 
-
     private void doStuff(KeyEvent e, String metodId){
         System.out.println("1");
+
+
     }
 
 
