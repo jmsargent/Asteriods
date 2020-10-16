@@ -147,12 +147,11 @@ class Spaceship extends SpaceObject {
         double[] rotatedPoint = {0,0};
 
             // new xcord from rotational matrix is calculated by
-            rotatedPoint[0] = this.getPosX() * Math.cos(angle) - this.getPosY() * Math.sin(angle);
+            rotatedPoint[0] = xyPoint[0] * Math.cos(angle) - xyPoint[1] * Math.sin(angle);
 
 
             // new ycord from rotational matrix is calculated by
-            rotatedPoint[1] = this.getPosX() * Math.sin(angle) + this.getPosY() * Math.cos(angle);
-
+            rotatedPoint[1] = xyPoint[0] * Math.sin(angle) + xyPoint[1] * Math.cos(angle);
 
             return rotatedPoint;
     }
@@ -170,11 +169,18 @@ class Spaceship extends SpaceObject {
     }
 
 
+    /**
+     * Rotates ship 5 deg in direction: dir
+     * @param dir
+     */
 
-    public void rotateShip(){
 
-        for (int i = 0; i < this.getBlueprint().npoints; i++) {
-        }
+
+    private double[] mergeXY(double x, double y){
+        double merged[] = new double[2];
+        merged[0] = x;
+        merged[1] = y;
+        return merged;
     }
 
 }
@@ -268,6 +274,24 @@ class Player extends Spaceship {
 
 
         this.setBlueprint(p);
+    }
+
+    public void rotateShip(String dir){
+
+
+        int[][] xyMerged = new int[3][2]; // 0 = tip , 1 = back right , 2 = left back
+
+        for (int i = 0; i < 3; i++) {
+            xyMerged[i] =
+        }
+
+        if(dir == "left"){
+
+        }else{
+
+        }
+
+
     }
 
     /*
