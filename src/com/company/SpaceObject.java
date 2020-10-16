@@ -135,8 +135,11 @@ class Shot extends SpaceObject{
 
 class Spaceship extends SpaceObject{
     private int nrOfShots;
-
-    public void rotate(){}
+    public
+    public void rotate(angle){
+        if(angle=="-")
+        return getPosX() * Math.cos(angle) - getPosY() * Math.sin(angle);
+        else { return getPosX() * Math.sin(angle) + getPosY() * Math.cos(angle);
 
 }
 

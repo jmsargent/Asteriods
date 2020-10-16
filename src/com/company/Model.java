@@ -37,6 +37,7 @@ public class Model {
         updateObjectPositioning();
         p1.setDy(p1.getDy() + 0.01);
         System.out.println(p1.getPosY());
+        p1.rotate();
     }
 
     private void updateObjectPositioning(){
