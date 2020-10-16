@@ -16,42 +16,41 @@ public class SpaceObject {
     private int life;
     private double posX;
 
-    public void updatePos(){
+    public void updatePos() {
 
         this.posX = this.posX + this.dx;
         this.posY = this.posY + this.dy;
 
 
-        if(this.posX > 609)
+        if (this.posX > 609)
             this.posX = -9;
-        if(this.posX < -9)
+        if (this.posX < -9)
             this.posX = 609;
 
-        if(this.posY > 609)
+        if (this.posY > 609)
             this.posY = -9;
-        if(this.posY < -9)
+        if (this.posY < -9)
             this.posY = 609;
-
 
 
         updatePolygon();
     }
 
-    private void updatePolygon(){
+    private void updatePolygon() {
         Polygon p = new Polygon();
 
-        p.addPoint((int)this.posX-3,(int) this.posY - 1);
-        p.addPoint((int)this.posX-1,(int) this.posY - 1);
-        p.addPoint((int)this.posX-1,(int) this.posY - 3);
-        p.addPoint((int)this.posX+1,(int) this.posY - 3);
-        p.addPoint((int)this.posX+1,(int) this.posY - 1);
-        p.addPoint((int)this.posX+3,(int) this.posY - 1);
-        p.addPoint((int)this.posX+3,(int) this.posY + 1);
-        p.addPoint((int)this.posX+1,(int) this.posY + 1);
-        p.addPoint((int)this.posX+1,(int) this.posY + 3);
-        p.addPoint((int)this.posX-1,(int) this.posY + 3);
-        p.addPoint((int)this.posX-1,(int) this.posY + 1);
-        p.addPoint((int)this.posX-3,(int) this.posY + 1);
+        p.addPoint((int) this.posX - 3, (int) this.posY - 1);
+        p.addPoint((int) this.posX - 1, (int) this.posY - 1);
+        p.addPoint((int) this.posX - 1, (int) this.posY - 3);
+        p.addPoint((int) this.posX + 1, (int) this.posY - 3);
+        p.addPoint((int) this.posX + 1, (int) this.posY - 1);
+        p.addPoint((int) this.posX + 3, (int) this.posY - 1);
+        p.addPoint((int) this.posX + 3, (int) this.posY + 1);
+        p.addPoint((int) this.posX + 1, (int) this.posY + 1);
+        p.addPoint((int) this.posX + 1, (int) this.posY + 3);
+        p.addPoint((int) this.posX - 1, (int) this.posY + 3);
+        p.addPoint((int) this.posX - 1, (int) this.posY + 1);
+        p.addPoint((int) this.posX - 3, (int) this.posY + 1);
 
         this.blueprint = p;
     }
@@ -108,19 +107,21 @@ public class SpaceObject {
     private double posY;
 
     // velocity vars
-    private double dx,dy;
+    private double dx, dy;
 
     private Color objColor;
 
-    public void collide(){}
+    public void collide() {
+    }
 
-    public void acellerate(){}
+    public void acellerate() {
+    }
 
 }
 
-class Asteroid extends SpaceObject{
+class Asteroid extends SpaceObject {
 
-    public Asteroid(int x, int y, int dx, int dy){
+    public Asteroid(int x, int y, int dx, int dy) {
         this.setPosX(x);
         this.setPosY(y);
 
@@ -129,24 +130,35 @@ class Asteroid extends SpaceObject{
     }
 }
 
-class Shot extends SpaceObject{
+class Shot extends SpaceObject {
     private Color shotColor;
 }
 
-class Spaceship extends SpaceObject{
+class Spaceship extends SpaceObject {
     private int nrOfShots;
-    public
-    public void rotate(angle){
-        if(angle=="-")
-        return getPosX() * Math.cos(angle) - getPosY() * Math.sin(angle);
-        else { return getPosX() * Math.sin(angle) + getPosY() * Math.cos(angle);
+    double angle;
 
+    public void rotate(double ang) {
+        double angle = ang;
+        System.out.println("Ang is" + ang);
+        double tempAngPosX;
+        double tempAngPosY;
+        if (angle <= 0) {
+            tempAngPosX = this.getPosX() * Math.cos(angle) - this.getPosY() * Math.sin(angle);
+            this.setPosX(tempAngPosX);
+        }
+        if (angle >= 0) {
+            tempAngPosY = this.getPosX() * Math.sin(angle) + this.getPosY() * Math.cos(angle);
+            System.out.println("TempAngPosY = " + tempAngPosY);
+            this.setPosY(tempAngPosY);
+        }
+    }
 }
 
-class Player extends Spaceship{
+class Player extends Spaceship {
 
 
-    public Player(int posX, int posY){
+    public Player(int posX, int posY) {
         this.setPosX(posX);
         this.setPosY(posY);
 
@@ -157,32 +169,32 @@ class Player extends Spaceship{
         updatePlayerPolygon();
     }
 
-    public void updatePlayerPos(){
+    public void updatePlayerPos() {
         setPosX(getDx() + getPosX());
         setPosY(getDy() + getPosY());
 
 
-        if(this.getPosX() > 609)
-            this.setPosX(-9);
-        if(this.getPosX() < -9)
-            this.setPosX(609);
+        if (this.getPosX() > 604)
+            this.setPosX(-4);
+        if (this.getPosX() < -4)
+            this.setPosX(604);
 
-        if(this.getPosY() > 609)
-            this.setPosY(-9);
-        if(this.getPosY() < -9)
-            this.setPosY(609);
+        if (this.getPosY() > 604)
+            this.setPosY(-4);
+        if (this.getPosY() < -4)
+            this.setPosY(604);
 
         updatePlayerPolygon();
     }
 
-    private void updatePlayerPolygon(){
+    private void updatePlayerPolygon() {
 
         Polygon p = new Polygon();
 
-        p.addPoint( (int) this.getPosX(),(int) this.getPosY() + 10);
-        p.addPoint( (int) this.getPosX() - 8, (int) this.getPosY() - 10);
-        p.addPoint( (int) this.getPosX(), (int) this.getPosY()-5);
-        p.addPoint( (int) this.getPosX() + 8, (int) this.getPosY() - 10);
+        p.addPoint((int) this.getPosX(), (int) this.getPosY() + 10);
+        p.addPoint((int) this.getPosX() - 8, (int) this.getPosY() - 10);
+        p.addPoint((int) this.getPosX(), (int) this.getPosY() - 5);
+        p.addPoint((int) this.getPosX() + 8, (int) this.getPosY() - 10);
 
         this.setBlueprint(p);
     }

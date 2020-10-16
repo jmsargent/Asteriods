@@ -18,13 +18,10 @@ public class Model {
     }
 
 
-
-
-
-    public Model(){
+    public Model() {
 
         // initiate player in middle of screen
-        p1 = new Player(300,300);
+        p1 = new Player(300, 300);
 
         nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
         nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
@@ -32,15 +29,17 @@ public class Model {
 
     /**
      * Updates positioning and potentially adds / removes objects
-      */
-    public void tick(){
+     */
+    public void tick() {
         updateObjectPositioning();
+        if(p1.getDy() <= 1)
         p1.setDy(p1.getDy() + 0.01);
+
         System.out.println(p1.getPosY());
-        p1.rotate();
+//        p1.rotate(10);
     }
 
-    private void updateObjectPositioning(){
+    private void updateObjectPositioning() {
         p1.updatePlayerPos();
 
         for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
