@@ -32,11 +32,6 @@ public class Model {
      */
     public void tick() {
         updateObjectPositioning();
-        if(p1.getDy() <= 1)
-        p1.setDy(p1.getDy() + 0.01);
-
-
-        p1.rotateShip("left");
     }
 
     private void updateObjectPositioning() {

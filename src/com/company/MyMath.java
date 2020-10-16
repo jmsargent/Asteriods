@@ -84,5 +84,4 @@ public class MyMath {
                 .toArray(double[][]::new);
     }
 
-
 }

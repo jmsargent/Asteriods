@@ -6,15 +6,14 @@ public class SpaceObject {
 
 
     /* TODO
-    1) fixa avrundning med polygon i player
-    2) Vi har redan updatePos i spaceObj, behöver inte i player
-    3) fixa grafisk model för spaceObjects
-    4) Fixa avrundning i polygon med spaceObjects
+    1) fixa grafisk model för spaceObjects
+    2) översätt angle från rad till deg
      */
 
     private Polygon blueprint;
     private int life;
     private double posX;
+
 
     public void updatePos() {
 
@@ -137,7 +136,7 @@ class Shot extends SpaceObject {
 class Spaceship extends SpaceObject {
 
     private int nrOfShots;
-    double angle;
+
 
 
 
@@ -153,19 +152,23 @@ class Player extends Spaceship {
     private double[] xPoints,yPoints;
     private int nPoints;
     private int[] rXPoints, rYPoints;
-
+    private double angle;
 
 
 
     public Player(int posX, int posY) {
+
+        this.angle = 0;
+        // make doubles later
         this.setPosX(posX);
         this.setPosY(posY);
 
         this.setDx(0);
         this.setDy(0);
 
-        xPoints = new double[] {0,5,-5}; // tip , rback , lback
-        yPoints = new double[] {5,-5,-5};
+
+        xPoints = new double[] {0,10,-10}; // tip , rback , lback
+        yPoints = new double[] {10,-10,-10};
         this.nPoints = 3;
 
         this.setLife(1);
@@ -221,13 +224,18 @@ class Player extends Spaceship {
 
         if(dir == "left"){
             for (int i = 0; i < 3; i++) {
-                xyMerged[i] = MyMath.rotatePoint(0.05,xyMerged[i]);
+                xyMerged[i] = MyMath.rotatePoint(0.04,xyMerged[i]);
             }
+            this.angle += 0.04 % 360;
         }else{
             for (int i = 0; i < 3; i++) {
-                xyMerged[i] = MyMath.rotatePoint(-0.05,xyMerged[i]);
+                xyMerged[i] = MyMath.rotatePoint(-0.04,xyMerged[i]);
             }
+            this.angle += -0.04 % 360;
         }
+
+        System.out.println(angle);
+
 
         xyMerged = MyMath.transposeMatrix(xyMerged);
 

@@ -16,13 +16,16 @@ public class View extends JFrame {
         this.addKeyListener(k);
     }*/
 
+    public void setKeyListener (KeyListener k){
+        this.k = k;
+    }
+
     public View(Model model){
 
         this.model=model;
-
         this.space = new Space();
         this.add(space);
-
+        this.addKeyListener(this.k);
         // basic settings for Jframe
         this.setSize(600,600);
         this.setVisible(true);

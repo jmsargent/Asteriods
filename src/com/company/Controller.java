@@ -14,6 +14,7 @@ public class Controller{
 
     public Controller(View view, Model model){
         this.view = view;
+        view.addKeyListener(kl);
         this.model = model;
         timer = new javax.swing.Timer(22, al);
 
@@ -37,17 +38,31 @@ public class Controller{
 
         @Override
         public void keyPressed(KeyEvent e) {
-            handleInput(e, "keyTyped");
+            handleInput(e, "keyPressed");
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            handleInput(e, "keyTyped");
+            handleInput(e, "keyReleased");
         }
     };
 
     private void handleInput(KeyEvent e, String metodId){
-        System.out.println("1");
+        System.out.println(metodId);
+        System.out.println( e.getKeyCode()) ;
+
+        switch (e.getKeyCode()){
+            case (37):
+                model.getP1().rotateShip("right");
+                break;
+            case(39):
+                model.getP1().rotateShip("left");
+
+        }
+
+        if(e.getKeyCode() == 37){
+
+        }
     }
 
 
