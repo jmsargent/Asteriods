@@ -1,6 +1,7 @@
 package com.company;
 
 import java.awt.*;
+import java.awt.geom.Line2D;
 
 public class SpaceObject {
 
@@ -8,6 +9,9 @@ public class SpaceObject {
     /* TODO
     1) fixa grafisk model för spaceObjects
     2) översätt angle från rad till deg
+    3) Ändra hårdkodning för dx (som är inverterad)
+    4) skapa metod move i spaceObject som rör objekt i dess velocitets
+       riktining, samt tar hänsyn till objetkets form / storlek
      */
 
     private Polygon blueprint;
@@ -130,7 +134,72 @@ class Asteroid extends SpaceObject {
 }
 
 class Shot extends SpaceObject {
-    private Color shotColor;
+
+
+    public double getDrawFromX() {
+        return drawFromX;
+    }
+
+    public void setDrawFromX(double drawFromX) {
+        this.drawFromX = drawFromX;
+    }
+
+    public double getDrawFromY() {
+        return drawFromY;
+    }
+
+    public void setDrawFromY(double drawFromY) {
+        this.drawFromY = drawFromY;
+    }
+
+    private double drawFromX,drawFromY;
+    private final int shotSize=6;
+    private int shotTimer;
+
+    public void getShot(){
+
+
+    }
+
+    public void incShotTimer(){
+        shotTimer ++;
+    }
+
+    public Shot(){
+        // exists for manipulation of shots with lists
+    }
+
+    public Shot(double x, double y, double angle, double dx, double dy){
+        setShotSpeed(dx,dy);
+        setPos(x,y);
+        this.shotTimer = 0;
+    }
+
+    private void setShotSpeed(double dx, double dy){
+        this.setDx(7+dx);
+        this.setDy(7+dy);
+    }
+
+    private void setPos(double x, double y){
+        this.setPosX(x);
+        this.setPosY(y);
+    }
+
+
+    // Does not use polygons hence the different implementation
+    private void setBluePrint(){
+        double[] dir = MyMath.scaleToLen(this.shotSize,new double[] {this.getDx(),this.getDy()});
+
+        this.drawFromX = this.getPosX() - dir[0];
+        this.drawFromY = this.getPosY() - dir[1];
+    }
+
+    public void move(){
+        this.setPosX(this.getPosX()+this.getDx());
+        this.setPosY(this.getPosY()+this.getDy());
+
+        setBluePrint();
+    }
 }
 
 class Spaceship extends SpaceObject {
@@ -144,13 +213,38 @@ class Spaceship extends SpaceObject {
 class Player extends Spaceship {
 
     private double[] xPoints, yPoints;
-    private int nPoints;
+    private int nPoints,ammo;
     private int[] rXPoints, rYPoints;
+
+    public double getAngle() {
+        return angle;
+    }
+
     private double angle;
+    private boolean gunsReady;
+
+    public boolean isGunsReady() {
+        return gunsReady;
+    }
+
+    public void setGunsReady(boolean gunsReady) {
+        this.gunsReady = gunsReady;
+    }
+
+
+
+
+
+    public void shoot(){
+        if(this.isGunsReady()){
+            this.gunsReady = false;
+        }
+    }
+
 
 
     public Player(int posX, int posY) {
-
+        this.gunsReady = true;
         this.angle = 0;
         // make doubles later
         this.setPosX(posX);
@@ -161,7 +255,7 @@ class Player extends Spaceship {
 
 
         xPoints = new double[]{0, 10, -10}; // tip , rback , lback
-        yPoints = new double[]{10, -10, -10};
+        yPoints = new double[]{20, -10, -10};
         this.nPoints = 3;
 
         this.setLife(1);
@@ -225,7 +319,7 @@ class Player extends Spaceship {
 
         this.angle %= 360;
 
-        System.out.println(angle);
+        //System.out.println(angle);
 
 
         xyMerged = MyMath.transposeMatrix(xyMerged);
@@ -236,17 +330,17 @@ class Player extends Spaceship {
     }
 
 
-    public void accelerate() {
+    public void accelerate(int dir) {
         double[] vector, maxVector;
 
         boolean isNegative;
-        System.out.println(this.angle);
+        //System.out.println(this.angle);
 
-        isNegative = MyMath.isNegative(this.angle);
 
-        vector = MyMath.toCartesian(Math.abs(this.angle), 0.1);
 
-        this.setDx(this.getDx() + vector[1]);
+        vector = MyMath.toCartesian(this.angle, 0.2);
+
+        this.setDx(this.getDx() - vector[1]); // testa om fungerar
         this.setDy(this.getDy() + vector[0]);
 
     }

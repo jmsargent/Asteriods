@@ -8,6 +8,11 @@ import java.util.Timer;
 
 public class Controller{
 
+    /*
+    TODO:
+    1) handle multiple simultaneous keystrokes
+     */
+
     private javax.swing.Timer timer;
     private View view;
     private Model model;
@@ -48,22 +53,32 @@ public class Controller{
     };
 
     private void handleInput(KeyEvent e, String metodId){
-        System.out.println(metodId);
-        System.out.println( e.getKeyCode()) ;
+        //System.out.println(metodId);
+        //System.out.println( e.getKeyCode()) ;
 
         switch (e.getKeyCode()){
-            case (37):
+            case (37): // right arrow
                 model.getP1().rotateShip("right");
                 break;
-            case(39):
+            case(39): // left arrow
                 model.getP1().rotateShip("left");
                 break;
-            case(38):
-                model.getP1().accelerate();
-                System.out.println("du borde inte se mig");
+            case(38): // uparrow
+                model.getP1().accelerate(1);
                 break;
+            case(32): // if spacebar
+                model.getP1().shoot();
+                model.createShot();
+                model.getP1().setGunsReady(false);
+                break;
+
         }
 
+        /*
+        case(40):
+        model.getP1().accelerate(-1);
+        break;
+        */
     }
 
 }

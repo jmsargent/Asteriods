@@ -1,5 +1,6 @@
 package com.company;
 
+import java.util.Vector;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
@@ -99,4 +100,34 @@ public class MyMath {
         return (d<0.0);
     }
 
+    /**
+     * calculates the new angle such that the resulting angle always is positive
+     * @param d
+     * @param delta
+     * @return
+     */
+
+    public static double calcPosAngle(double d, double delta){
+        double result=0;
+
+        return result;
+    }
+
+    public static double[] scaleToLen(int len,double[] v){
+
+        for (int i = 0; i < v.length; i++) {
+            v[i] = v[i]/arraySum(v)*len;
+        }
+
+
+        return v;
+    }
+    
+    public static double arraySum(double a[]){
+        double sum = 0;
+        for (int i = 0; i < a.length; i++) {
+            sum += a[i];
+        }
+        return sum;
+    }
 }

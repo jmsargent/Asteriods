@@ -42,12 +42,12 @@ public class View extends JFrame {
         private List<Polygon> toDraw = new LinkedList<>();
         private Iterator<Polygon> toDrawIt = toDraw.iterator();
 
-
+        /*
         public void updateToDraw(){
             for (int i = 0; i <model.getNonPlayerSpaceObjects().size() ; i++) {
                 toDraw.add(model.getNonPlayerSpaceObjects().get(i).getBlueprint());
             }
-        }
+        }*/
 
 
         @Override
@@ -55,15 +55,19 @@ public class View extends JFrame {
 
             super.paintComponent(g);
             super.setBackground(Color.BLACK);
-            g.setColor(Color.WHITE);
-            g.drawOval(50,50,50,50);
+            //g.setColor(Color.WHITE);
+            //g.drawOval(50,50,50,50);
             g.setColor(Color.RED);
             g.fillPolygon(model.getP1().getBlueprint());
-
+            g.setColor(Color.GREEN);
+            g.drawLine(50,50,60,60);
             g.setColor(Color.GRAY);
+            //g.line
+            /*
             while (toDrawIt.hasNext()){
                 g.fillPolygon(toDrawIt.next());
             }
+             */
         }
     }
 }
