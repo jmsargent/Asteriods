@@ -135,53 +135,12 @@ class Shot extends SpaceObject {
 }
 
 class Spaceship extends SpaceObject {
+
     private int nrOfShots;
     double angle;
 
-    public double[] rotatePoint(double ang, double[] xyPoint) {
-        double angle = ang;
-        System.out.println("Ang is" + ang);
-        double tempAngPosX;
-        double tempAngPosY;
-
-        double[] rotatedPoint = {0,0};
-
-            // new xcord from rotational matrix is calculated by
-            rotatedPoint[0] = xyPoint[0] * Math.cos(angle) - xyPoint[1] * Math.sin(angle);
 
 
-            // new ycord from rotational matrix is calculated by
-            rotatedPoint[1] = xyPoint[0] * Math.sin(angle) + xyPoint[1] * Math.cos(angle);
-
-            return rotatedPoint;
-    }
-
-    public int roundToNearestInt(double d){
-
-        int floor = (int) d;
-
-        if (d-floor < 0.5 ){
-            return floor + 1;
-        }else {
-            return floor;
-        }
-
-    }
-
-
-    /**
-     * Rotates ship 5 deg in direction: dir
-     * @param dir
-     */
-
-
-
-    private double[] mergeXY(double x, double y){
-        double merged[] = new double[2];
-        merged[0] = x;
-        merged[1] = y;
-        return merged;
-    }
 
 }
 
@@ -231,44 +190,19 @@ class Player extends Spaceship {
         updatePlayerPolygon();
     }
 
-    private int[] roundedIntArray(double[] a, int size){
-        int[] a2 = new int[size];
-
-        for (int i = 0; i < size; i++) {
-            a2[i] = roundToNearestInt(a[i]);
-        }
-
-        return a2;
-    }
 
 
-    /**
-     * Adds constant to every every indice of array
-     * @param a
-     * @param b
-     * @return
-     */
-    private int[] arrayConstAddition(int a[], int b){
 
-        int[] sum = new int[a.length];
-
-
-        for (int i = 0; i < a.length; i++) {
-            sum[i] = a[i] + b;
-        }
-
-        return sum;
-    }
 
     private void updatePlayerPolygon() {
 
 
-        this.rXPoints = roundedIntArray(this.xPoints,this.xPoints.length);
-        this.rYPoints = roundedIntArray(this.yPoints,this.yPoints.length);
+        this.rXPoints = MyMath.roundedIntArray(this.xPoints,this.xPoints.length);
+        this.rYPoints = MyMath.roundedIntArray(this.yPoints,this.yPoints.length);
 
 
-        Polygon p = new Polygon( arrayConstAddition( this.rXPoints, roundToNearestInt(this.getPosX()) ),
-                                 arrayConstAddition( this.rYPoints, roundToNearestInt(this.getPosY()) ),
+        Polygon p = new Polygon( MyMath.arrayConstAddition( this.rXPoints, MyMath.roundToNearestInt(this.getPosX()) ),
+                                 MyMath.arrayConstAddition( this.rYPoints, MyMath.roundToNearestInt(this.getPosY()) ),
                         3);
 
 
@@ -279,19 +213,27 @@ class Player extends Spaceship {
     public void rotateShip(String dir){
 
 
-        int[][] xyMerged = new int[3][2]; // 0 = tip , 1 = back right , 2 = left back
+        double[][] xyMerged = new double[3][2]; // 0 = tip , 1 = back right , 2 = left back
 
         for (int i = 0; i < 3; i++) {
-            xyMerged[i] =
+            xyMerged[i] = MyMath.mergeXY(xPoints[i],yPoints[i]);
         }
 
         if(dir == "left"){
-
+            for (int i = 0; i < 3; i++) {
+                xyMerged[i] = MyMath.rotatePoint(0.05,xyMerged[i]);
+            }
         }else{
-
+            for (int i = 0; i < 3; i++) {
+                xyMerged[i] = MyMath.rotatePoint(-0.05,xyMerged[i]);
+            }
         }
 
+        xyMerged = MyMath.transposeMatrix(xyMerged);
 
+        // this might work
+        this.xPoints = xyMerged[0];
+        this.yPoints = xyMerged[1];
     }
 
     /*

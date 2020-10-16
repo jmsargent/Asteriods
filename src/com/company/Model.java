@@ -35,8 +35,8 @@ public class Model {
         if(p1.getDy() <= 1)
         p1.setDy(p1.getDy() + 0.01);
 
-        System.out.println(p1.getPosY());
-//        p1.rotate(10);
+
+        p1.rotateShip("left");
     }
 
     private void updateObjectPositioning() {

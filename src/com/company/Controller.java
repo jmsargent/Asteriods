@@ -18,6 +18,7 @@ public class Controller{
         timer = new javax.swing.Timer(22, al);
 
         timer.start();
+
     }
 
     private ActionListener al = new ActionListener() {
@@ -31,24 +32,22 @@ public class Controller{
     private KeyListener kl = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
-            doStuff(e, "keyTyped");
+            handleInput(e, "keyTyped");
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            doStuff(e, "keyTyped");
+            handleInput(e, "keyTyped");
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            doStuff(e, "keyTyped");
+            handleInput(e, "keyTyped");
         }
     };
 
-    private void doStuff(KeyEvent e, String metodId){
+    private void handleInput(KeyEvent e, String metodId){
         System.out.println("1");
-
-
     }
 
 
