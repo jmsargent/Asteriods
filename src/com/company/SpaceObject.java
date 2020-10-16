@@ -138,25 +138,30 @@ class Spaceship extends SpaceObject {
     private int nrOfShots;
     double angle;
 
-    public void rotate(double ang) {
+    public double[] rotate(double ang, double[] xyPoint) {
         double angle = ang;
         System.out.println("Ang is" + ang);
         double tempAngPosX;
         double tempAngPosY;
-        if (angle <= 0) {
-            tempAngPosX = this.getPosX() * Math.cos(angle) - this.getPosY() * Math.sin(angle);
-            this.setPosX(tempAngPosX);
-        }
-        if (angle >= 0) {
-            tempAngPosY = this.getPosX() * Math.sin(angle) + this.getPosY() * Math.cos(angle);
-            System.out.println("TempAngPosY = " + tempAngPosY);
-            this.setPosY(tempAngPosY);
-        }
+
+        double[] rotatedPoint = {0,0};
+
+            // new xcord from rotational matrix is calculated by
+            rotatedPoint[0] = this.getPosX() * Math.cos(angle) - this.getPosY() * Math.sin(angle);
+
+
+            // new ycord from rotational matrix is calculated by
+            rotatedPoint[1] = this.getPosX() * Math.sin(angle) + this.getPosY() * Math.cos(angle);
+
+
+            return rotatedPoint;
     }
 }
 
 class Player extends Spaceship {
 
+    private final int scale = 10;
+    private int tipX,tipY,lBackX,lBackY,rBackX,rBackY;
 
     public Player(int posX, int posY) {
         this.setPosX(posX);
@@ -191,10 +196,10 @@ class Player extends Spaceship {
 
         Polygon p = new Polygon();
 
-        p.addPoint((int) this.getPosX(), (int) this.getPosY() + 10);
-        p.addPoint((int) this.getPosX() - 8, (int) this.getPosY() - 10);
-        p.addPoint((int) this.getPosX(), (int) this.getPosY() - 5);
-        p.addPoint((int) this.getPosX() + 8, (int) this.getPosY() - 10);
+        p.addPoint((int) this.getPosX() + this.scale, (int) this.getPosY() + 10);        // ( 0 , 10 )
+        p.addPoint((int) this.getPosX() + 10, (int) this.getPosY() - 10);      // ( + 10 , -10 )
+        p.addPoint((int) this.getPosX() - 10, (int) this.getPosY() - 10);    // ( -10, -10 )
+        // p.addPoint((int) this.getPosX(), (int) this.getPosY() - 5);
 
         this.setBlueprint(p);
     }
