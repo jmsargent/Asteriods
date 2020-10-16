@@ -138,7 +138,7 @@ class Spaceship extends SpaceObject {
     private int nrOfShots;
     double angle;
 
-    public double[] rotate(double ang, double[] xyPoint) {
+    public double[] rotatePoint(double ang, double[] xyPoint) {
         double angle = ang;
         System.out.println("Ang is" + ang);
         double tempAngPosX;
@@ -156,12 +156,41 @@ class Spaceship extends SpaceObject {
 
             return rotatedPoint;
     }
+
+    public int roundToNearestInt(double d){
+
+        int floor = (int) d;
+
+        if (d-floor < 0.5 ){
+            return floor + 1;
+        }else {
+            return floor;
+        }
+
+    }
+
+
+
+    public void rotateShip(){
+
+        for (int i = 0; i < this.getBlueprint().npoints; i++) {
+        }
+    }
+
 }
+
+
+
+
 
 class Player extends Spaceship {
 
-    private final int scale = 10;
-    private int tipX,tipY,lBackX,lBackY,rBackX,rBackY;
+    private double[] xPoints,yPoints;
+    private int nPoints;
+    private int[] rXPoints, rYPoints;
+
+
+
 
     public Player(int posX, int posY) {
         this.setPosX(posX);
@@ -169,6 +198,10 @@ class Player extends Spaceship {
 
         this.setDx(0);
         this.setDy(0);
+
+        xPoints = new double[] {0,5,-5}; // tip , rback , lback
+        yPoints = new double[] {5,-5,-5};
+        this.nPoints = 3;
 
         this.setLife(1);
         updatePlayerPolygon();
@@ -192,14 +225,47 @@ class Player extends Spaceship {
         updatePlayerPolygon();
     }
 
+    private int[] roundedIntArray(double[] a, int size){
+        int[] a2 = new int[size];
+
+        for (int i = 0; i < size; i++) {
+            a2[i] = roundToNearestInt(a[i]);
+        }
+
+        return a2;
+    }
+
+
+    /**
+     * Adds constant to every every indice of array
+     * @param a
+     * @param b
+     * @return
+     */
+    private int[] arrayConstAddition(int a[], int b){
+
+        int[] sum = new int[a.length];
+
+
+        for (int i = 0; i < a.length; i++) {
+            sum[i] = a[i] + b;
+        }
+
+        return sum;
+    }
+
     private void updatePlayerPolygon() {
 
-        Polygon p = new Polygon();
 
-        p.addPoint((int) this.getPosX() + this.scale, (int) this.getPosY() + 10);        // ( 0 , 10 )
-        p.addPoint((int) this.getPosX() + 10, (int) this.getPosY() - 10);      // ( + 10 , -10 )
-        p.addPoint((int) this.getPosX() - 10, (int) this.getPosY() - 10);    // ( -10, -10 )
-        // p.addPoint((int) this.getPosX(), (int) this.getPosY() - 5);
+        this.rXPoints = roundedIntArray(this.xPoints,this.xPoints.length);
+        this.rYPoints = roundedIntArray(this.yPoints,this.yPoints.length);
+
+
+        Polygon p = new Polygon( arrayConstAddition( this.rXPoints, roundToNearestInt(this.getPosX()) ),
+                                 arrayConstAddition( this.rYPoints, roundToNearestInt(this.getPosY()) ),
+                        3);
+
+
 
         this.setBlueprint(p);
     }
