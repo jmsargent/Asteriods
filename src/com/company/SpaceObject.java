@@ -138,22 +138,15 @@ class Spaceship extends SpaceObject {
     private int nrOfShots;
 
 
-
-
-
 }
-
-
-
 
 
 class Player extends Spaceship {
 
-    private double[] xPoints,yPoints;
+    private double[] xPoints, yPoints;
     private int nPoints;
     private int[] rXPoints, rYPoints;
     private double angle;
-
 
 
     public Player(int posX, int posY) {
@@ -167,8 +160,8 @@ class Player extends Spaceship {
         this.setDy(0);
 
 
-        xPoints = new double[] {0,10,-10}; // tip , rback , lback
-        yPoints = new double[] {10,-10,-10};
+        xPoints = new double[]{0, 10, -10}; // tip , rback , lback
+        yPoints = new double[]{10, -10, -10};
         this.nPoints = 3;
 
         this.setLife(1);
@@ -194,45 +187,43 @@ class Player extends Spaceship {
     }
 
 
-
-
-
     private void updatePlayerPolygon() {
 
 
-        this.rXPoints = MyMath.roundedIntArray(this.xPoints,this.xPoints.length);
-        this.rYPoints = MyMath.roundedIntArray(this.yPoints,this.yPoints.length);
+        this.rXPoints = MyMath.roundedIntArray(this.xPoints, this.xPoints.length);
+        this.rYPoints = MyMath.roundedIntArray(this.yPoints, this.yPoints.length);
 
 
-        Polygon p = new Polygon( MyMath.arrayConstAddition( this.rXPoints, MyMath.roundToNearestInt(this.getPosX()) ),
-                                 MyMath.arrayConstAddition( this.rYPoints, MyMath.roundToNearestInt(this.getPosY()) ),
-                        3);
-
+        Polygon p = new Polygon(MyMath.arrayConstAddition(this.rXPoints, MyMath.roundToNearestInt(this.getPosX())),
+                MyMath.arrayConstAddition(this.rYPoints, MyMath.roundToNearestInt(this.getPosY())),
+                3);
 
 
         this.setBlueprint(p);
     }
 
-    public void rotateShip(String dir){
+    public void rotateShip(String dir) {
 
 
         double[][] xyMerged = new double[3][2]; // 0 = tip , 1 = back right , 2 = left back
 
         for (int i = 0; i < 3; i++) {
-            xyMerged[i] = MyMath.mergeXY(xPoints[i],yPoints[i]);
+            xyMerged[i] = MyMath.mergeXY(xPoints[i], yPoints[i]);
         }
 
-        if(dir == "left"){
+        if (dir == "left") {
             for (int i = 0; i < 3; i++) {
-                xyMerged[i] = MyMath.rotatePoint(0.04,xyMerged[i]);
+                xyMerged[i] = MyMath.rotatePoint(6, xyMerged[i]);
             }
-            this.angle += 0.04 % 360;
-        }else{
+            this.angle += 6;
+        } else {
             for (int i = 0; i < 3; i++) {
-                xyMerged[i] = MyMath.rotatePoint(-0.04,xyMerged[i]);
+                xyMerged[i] = MyMath.rotatePoint(-6, xyMerged[i]);
             }
-            this.angle += -0.04 % 360;
+            this.angle += -6;
         }
+
+        this.angle %= 360;
 
         System.out.println(angle);
 
@@ -242,6 +233,22 @@ class Player extends Spaceship {
         // this might work
         this.xPoints = xyMerged[0];
         this.yPoints = xyMerged[1];
+    }
+
+
+    public void accelerate() {
+        double[] vector, maxVector;
+
+        boolean isNegative;
+        System.out.println(this.angle);
+
+        isNegative = MyMath.isNegative(this.angle);
+
+        vector = MyMath.toCartesian(Math.abs(this.angle), 0.1);
+
+        this.setDx(this.getDx() + vector[1]);
+        this.setDy(this.getDy() + vector[0]);
+
     }
 
     /*

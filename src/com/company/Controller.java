@@ -57,15 +57,14 @@ public class Controller{
                 break;
             case(39):
                 model.getP1().rotateShip("left");
-
+                break;
+            case(38):
+                model.getP1().accelerate();
+                System.out.println("du borde inte se mig");
+                break;
         }
 
-        if(e.getKeyCode() == 37){
-
-        }
     }
-
-
 
 }
 // https://academo.org/demos/rotation-about-point/

@@ -62,12 +62,16 @@ public class MyMath {
 
         double[] rotatedPoint = {0,0};
 
+        ang = Math.toRadians(ang);
+
+
         // new xcord from rotational matrix is calculated by
         rotatedPoint[0] = xyPoint[0] * Math.cos(ang) - xyPoint[1] * Math.sin(ang);
 
 
         // new ycord from rotational matrix is calculated by
         rotatedPoint[1] = xyPoint[0] * Math.sin(ang) + xyPoint[1] * Math.cos(ang);
+
 
         return rotatedPoint;
     }
@@ -82,6 +86,17 @@ public class MyMath {
         return IntStream.range(0, matrix[0].length)
                 .mapToObj(i -> Stream.of(matrix).mapToDouble(row -> row[i]).toArray())
                 .toArray(double[][]::new);
+    }
+
+    /**
+     * takes a vector described in polar coordinates and converts it to cartesian coordinates.
+     */
+    public static double[] toCartesian(double angle, double magnitude){
+        return new double[] {(Math.cos(Math.toRadians(angle))*magnitude),(Math.sin(Math.toRadians(angle))*magnitude)};
+    }
+
+    public static boolean isNegative(double d){
+        return (d<0.0);
     }
 
 }
