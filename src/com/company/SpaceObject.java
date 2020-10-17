@@ -6,6 +6,14 @@ import java.awt.geom.Line2D;
 public class SpaceObject {
 
 
+    private Polygon blueprint;
+    private int life;
+    private double posX;
+
+    // This should exist fix it
+    public void move(){
+    }
+
     /* TODO
     1) fixa grafisk model för spaceObjects
     2) översätt angle från rad till deg
@@ -13,11 +21,9 @@ public class SpaceObject {
     4) skapa metod move i spaceObject som rör objekt i dess velocitets
        riktining, samt tar hänsyn till objetkets form / storlek
     5) Skapa constructor för player
+    6) Skapa move som metod till SpaceObject
      */
 
-    private Polygon blueprint;
-    private int life;
-    private double posX;
 
 
     public void updatePos() {
@@ -136,6 +142,21 @@ class Asteroid extends SpaceObject {
 
 class Shot extends SpaceObject {
 
+    private double drawFromX,drawFromY;
+    private final int shotSize=6;
+    private boolean isOutOfBounds;
+
+
+
+    public Shot(double x, double y, double angle, double dx, double dy){
+        setShotSpeed(dx,dy);
+        setPos(x,y);
+        this.isOutOfBounds = false;
+    }
+
+    public boolean isOutOfBounds() {
+        return isOutOfBounds;
+    }
 
     public double getDrawFromX() {
         return drawFromX;
@@ -153,28 +174,6 @@ class Shot extends SpaceObject {
         this.drawFromY = drawFromY;
     }
 
-    private double drawFromX,drawFromY;
-    private final int shotSize=6;
-    private int shotTimer;
-
-    public void getShot(){
-
-
-    }
-
-    public void incShotTimer(){
-        shotTimer ++;
-    }
-
-    public Shot(){
-        // exists for manipulation of shots with lists
-    }
-
-    public Shot(double x, double y, double angle, double dx, double dy){
-        setShotSpeed(dx,dy);
-        setPos(x,y);
-        this.shotTimer = 0;
-    }
 
     private void setShotSpeed(double dx, double dy){
         this.setDx(7+dx);
@@ -199,7 +198,18 @@ class Shot extends SpaceObject {
         this.setPosX(this.getPosX()+this.getDx());
         this.setPosY(this.getPosY()+this.getDy());
 
+        updateOutOfBounds();
+
         setBluePrint();
+    }
+
+    private void updateOutOfBounds(){
+
+        if(this.getPosX()-this.shotSize < 0 || this.getPosX()+this.shotSize > 600 ||
+           this.getPosY()-this.shotSize < 0 || this.getPosY()+this.shotSize > 600){
+            this.isOutOfBounds = true;
+        }
+
     }
 }
 
@@ -297,7 +307,7 @@ class Player extends Spaceship {
 
 
 
-
+    // its quirky that this and move in shots exists simoltaneously
     public void updatePlayerPos() {
         setPosX(getDx() + getPosX());
         setPosY(getDy() + getPosY());

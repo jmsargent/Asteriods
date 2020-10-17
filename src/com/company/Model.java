@@ -8,13 +8,15 @@ import java.util.ListIterator;
 
 public class Model {
 
-    public List<SpaceObject> getNonPlayerSpaceObjects() {
+    private List<SpaceObject> getNonPlayerSpaceObjects() {
         return nonPlayerSpaceObjects;
     }
-    private List<Shot> shots;
+    private LinkedList<Shot> shots;
+
+
     private ListIterator shotsIterator;
     private List<SpaceObject> nonPlayerSpaceObjects;
-    private Player p1;
+    private Player p1; //= new Player(300, 300);
     private Shot shot;
 
 
@@ -22,16 +24,21 @@ public class Model {
         // initiate player in middle of screen
         p1 = new Player(300, 300);
         shots = new LinkedList<Shot>();
+        shotsIterator = shots.listIterator();
 
 
+    //    nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
+    //    nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
+    }
 
-        nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
-        nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
+    public LinkedList<Shot> getShots() {
+        return shots;
     }
 
 
     private void createShot(){
-       // this.shots.add(new Shot(p1.getPosX(),p1.getPosY(),p1.getAngle(),p1.getDx(),p1.getDy()));
+       this.shots.add(new Shot(p1.getPosX(),p1.getPosY(),p1.getAngle(),p1.getDx(),p1.getDy()));
+
     }
 
     public void playerFire(){
@@ -41,10 +48,6 @@ public class Model {
         }
     }
 
-
-    private void removeOldestShot(){
-        this.shots.remove(this.shots.lastIndexOf(new Shot()));
-    }
 
 
 
@@ -57,25 +60,32 @@ public class Model {
      */
     public void tick() {
         updateObjectPositioning();
-
         updateTimers();
-
         //System.out.println("dx is: " + p1.getDx());
         //System.out.println("dy is: " + p1.getDy());
 
     }
 
     private void updateTimers(){
-
         p1.decTimers();
-
     }
 
     private void updateObjectPositioning() {
         p1.updatePlayerPos();
 
-        for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
+        updateShotsPositioning();
+
+        /*for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
             nonPlayerSpaceObject.updatePos();
-        }
+        }*/
+    }
+    private void updateShotsPositioning(){
+
+
+     while(this.shotsIterator.hasNext()){
+         Shot currentShot = (Shot) shotsIterator.next();
+         if(currentShot.isOutOfBounds())
+             shotsIterator.remove();
+     }
     }
 }

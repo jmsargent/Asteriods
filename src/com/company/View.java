@@ -57,10 +57,8 @@ public class View extends JFrame {
             super.setBackground(Color.BLACK);
             //g.setColor(Color.WHITE);
             //g.drawOval(50,50,50,50);
-            g.setColor(Color.RED);
-            g.fillPolygon(model.getP1().getBlueprint());
-            g.setColor(Color.GREEN);
-            g.drawLine(50,50,60,60);
+            drawPlayer(g);
+            drawShots(g);
             g.setColor(Color.GRAY);
             //g.line
             /*
@@ -68,6 +66,29 @@ public class View extends JFrame {
                 g.fillPolygon(toDrawIt.next());
             }
              */
+        }
+
+
+        private void drawPlayer(Graphics g){
+            g.setColor(Color.RED);
+            g.fillPolygon(model.getP1().getBlueprint());
+        }
+
+
+        private void drawShots(Graphics g){
+            g.setColor(Color.GREEN);
+
+
+
+            LinkedList<Shot> shots = model.getShots();
+            ListIterator drawShotsIterator = shots.listIterator();
+
+
+            while(drawShotsIterator.hasNext()){
+
+                Shot shot = (Shot) drawShotsIterator.next();
+
+            }
         }
     }
 }
