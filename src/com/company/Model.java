@@ -35,12 +35,12 @@ public class Model {
     private void createShot() {
 
         for (int i = 0; i < 4; i++) {
-
             if(shotArray[i] == null){
-                shotArray[i] = new Shot(p1.getPosX(), p1.getPosY(), p1.getAngle());
+                System.out.println("tipX:" +p1.getTip()[0]);
+                System.out.println("tipY:" +p1.getTip()[1]);
+                shotArray[i] = new Shot(p1.getTip(), p1.getAngle(), p1.getDx(), p1.getDy());
                 break ;
             }
-
         }
         System.out.println("angle :" + p1.getAngle());
 

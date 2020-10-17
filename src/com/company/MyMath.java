@@ -47,14 +47,12 @@ public class MyMath {
 
     }
 
-
     public static double[] mergeXY(double x, double y){
         double merged[] = new double[2];
         merged[0] = x;
         merged[1] = y;
         return merged;
     }
-
 
     public static double[] rotatePoint(double ang, double[] xyPoint) {
 

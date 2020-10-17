@@ -145,12 +145,13 @@ class Shot extends SpaceObject {
     private double drawFromX,drawFromY;
     private final int shotSize=6;
     private boolean isOutOfBounds;
+    private double shotAngle;
 
 
-
-    public Shot(double x, double y, double angle, double dx, double dy){
-        setShotSpeed(dx,dy);
-        setPos(x,y);
+    public Shot(double[] tip, double angle, double dx, double dy){
+        setShotSpeed(angle);
+        setPos(tip[0],tip[1],angle);
+        this.shotAngle = angle; // vet att det här är fult
         this.isOutOfBounds = false;
     }
 
@@ -166,12 +167,28 @@ class Shot extends SpaceObject {
         return drawFromY;
     }
 
-    private void setShotSpeed(double dx, double dy){
-        this.setDx(7+dx);
-        this.setDy(7+dy);
+    private void setShotSpeed(double angle){
+
+        double angle2 = angle + 90;
+
+        double[] temp = new double[2];
+
+        temp = MyMath.toCartesian(angle2,5);
+
+        System.out.println("dx:");
+
+        this.setDx(temp[0]);
+        this.setDy(temp[1]);
     }
 
-    private void setPos(double x, double y){
+    private void setPos(double x, double y,double angle){
+
+        // Remember that Coordinates work differently than expected when using computer graphics (y inverted)
+
+        if(angle > 0 ||angle < 90){
+
+        }
+
         this.setPosX(x);
         this.setPosY(y);
     }
@@ -213,7 +230,10 @@ class Spaceship extends SpaceObject {
 
 class Player extends Spaceship {
 
-    private double[] xPoints, yPoints;
+
+
+    private double[] xPoints;
+    private double[] yPoints;
     private int nPoints,gunsReadyTimer;
     private int[] rXPoints, rYPoints;
     private double angle;
@@ -223,8 +243,6 @@ class Player extends Spaceship {
     public Player(int posX, int posY) {
         this.gunsReady = true;
         this.angle = 0;
-
-
 
         this.gunsReadyTimer = 15; // 1/3 sec rate of fire
 
@@ -257,7 +275,9 @@ class Player extends Spaceship {
         this.gunsReady = gunsReady;
     }
 
-
+    public double[] getTip(){
+        return new double[] {this.getPosX() + xPoints[0],this.getPosY() + yPoints[0]};
+    }
 
     public void shoot(){
         this.gunsReady = false;
@@ -298,6 +318,8 @@ class Player extends Spaceship {
             this.setPosY(604);
 
         updatePlayerPolygon();
+
+
     }
 
 

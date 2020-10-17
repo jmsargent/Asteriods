@@ -8,6 +8,7 @@ import java.util.List;
 
 public class View extends JFrame {
 
+
     private Model model;
     private Space space;
     private KeyListener k;
