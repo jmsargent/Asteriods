@@ -162,18 +162,9 @@ class Shot extends SpaceObject {
         return drawFromX;
     }
 
-    public void setDrawFromX(double drawFromX) {
-        this.drawFromX = drawFromX;
-    }
-
     public double getDrawFromY() {
         return drawFromY;
     }
-
-    public void setDrawFromY(double drawFromY) {
-        this.drawFromY = drawFromY;
-    }
-
 
     private void setShotSpeed(double dx, double dy){
         this.setDx(7+dx);
@@ -188,6 +179,7 @@ class Shot extends SpaceObject {
 
     // Does not use polygons hence the different implementation
     private void setBluePrint(){
+
         double[] dir = MyMath.scaleToLen(this.shotSize,new double[] {this.getDx(),this.getDy()});
 
         this.drawFromX = this.getPosX() - dir[0];
@@ -222,7 +214,7 @@ class Spaceship extends SpaceObject {
 class Player extends Spaceship {
 
     private double[] xPoints, yPoints;
-    private int nPoints,ammo,gunsReadyTimer,reloadTimer;
+    private int nPoints,gunsReadyTimer;
     private int[] rXPoints, rYPoints;
     private double angle;
     private boolean gunsReady; // limits rate of fire
@@ -232,8 +224,8 @@ class Player extends Spaceship {
         this.gunsReady = true;
         this.angle = 0;
 
-        this.ammo = 4;
-        this.reloadTimer = 90; // 45 fps => 2 sec reload
+
+
         this.gunsReadyTimer = 15; // 1/3 sec rate of fire
 
 
@@ -265,22 +257,14 @@ class Player extends Spaceship {
         this.gunsReady = gunsReady;
     }
 
-    public void incAmmo(){
-        this.ammo++;
-    }
 
-    public int getAmmo(){
-        return this.ammo;
-    }
 
     public void shoot(){
         this.gunsReady = false;
-        this.ammo --;
         System.out.println("pewpew");
     }
 
     public void decTimers(){
-
 
         if(!this.gunsReady){
             this.gunsReadyTimer --;
@@ -289,16 +273,6 @@ class Player extends Spaceship {
                 this.gunsReady = true;
                 this.gunsReadyTimer = 15;
                 System.out.println("Guns ready");
-            }
-        }
-
-        if(this.ammo < 4){
-            this.reloadTimer --;
-
-            if(this.reloadTimer == 0){
-                this.ammo ++;
-                this.reloadTimer = 90;
-                System.out.println("ur current ammo is now: " + this.ammo);
             }
         }
 
@@ -381,7 +355,6 @@ class Player extends Spaceship {
 
         boolean isNegative;
         //System.out.println(this.angle);
-
 
 
         vector = MyMath.toCartesian(this.angle, 0.2);

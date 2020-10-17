@@ -1,21 +1,13 @@
 package com.company;
 
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.*;
 import java.util.List;
-import java.util.ListIterator;
 
 public class Model {
 
-    private List<SpaceObject> getNonPlayerSpaceObjects() {
-        return nonPlayerSpaceObjects;
-    }
-    private LinkedList<Shot> shots;
+    private Shot[] shotArray;
 
-
-    private ListIterator shotsIterator;
-    private List<SpaceObject> nonPlayerSpaceObjects;
     private Player p1; //= new Player(300, 300);
     private Shot shot;
 
@@ -23,32 +15,49 @@ public class Model {
     public Model() {
         // initiate player in middle of screen
         p1 = new Player(300, 300);
-        shots = new LinkedList<Shot>();
-        shotsIterator = shots.listIterator();
+        shotArray = new Shot[4];
 
+        for (int i = 0; i < 4; i++) {
+            shotArray[i] = null;
+        }
 
-    //    nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
-    //    nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
+        //    nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
+        //    nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
     }
 
-    public LinkedList<Shot> getShots() {
-        return shots;
+    public Shot[] getShotArray() {
+        return shotArray;
     }
 
+    /**
+     * Creates shot in first empty position of array if there are any empty slots
+     */
+    private void createShot() {
 
-    private void createShot(){
-       this.shots.add(new Shot(p1.getPosX(),p1.getPosY(),p1.getAngle(),p1.getDx(),p1.getDy()));
+        for (int i = 0; i < 4; i++) {
 
+            if(shotArray[i] == null){
+                shotArray[i] = new Shot(p1.getPosX(), p1.getPosY(), p1.getAngle());
+                break ;
+            }
+
+        }
+        System.out.println("angle :" + p1.getAngle());
+
+        /*
+        System.out.println(p1.getPosX());
+        System.out.println(p1.getPosY());
+        System.out.println(p1.getDx());
+        System.out.println(p1.getDy());
+         */
     }
 
-    public void playerFire(){
-        if(p1.isGunsReady() && p1.getAmmo() > 0){
+    public void playerFire() {
+        if (p1.isGunsReady()) {
             p1.shoot();
             createShot();
         }
     }
-
-
 
 
     public Player getP1() {
@@ -59,14 +68,15 @@ public class Model {
      * Updates positioning and potentially adds / removes objects
      */
     public void tick() {
-        updateObjectPositioning();
+
         updateTimers();
+        updateObjectPositioning();
         //System.out.println("dx is: " + p1.getDx());
         //System.out.println("dy is: " + p1.getDy());
 
     }
 
-    private void updateTimers(){
+    private void updateTimers() {
         p1.decTimers();
     }
 
@@ -79,13 +89,21 @@ public class Model {
             nonPlayerSpaceObject.updatePos();
         }*/
     }
-    private void updateShotsPositioning(){
 
+    /**
+     * updates position of all shots
+     */
+    private void updateShotsPositioning() {
+            for (int i = 0; i < 4; i++) {
+                if (shotArray[i] != null) {
+                    shotArray[i].move();
 
-     while(this.shotsIterator.hasNext()){
-         Shot currentShot = (Shot) shotsIterator.next();
-         if(currentShot.isOutOfBounds())
-             shotsIterator.remove();
-     }
+                    if(shotArray[i].isOutOfBounds()){
+                        shotArray[i] = null;
+                    }
+
+                }
+            }
+
     }
 }

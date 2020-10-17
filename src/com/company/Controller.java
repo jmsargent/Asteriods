@@ -69,7 +69,6 @@ public class Controller{
             case(32): // if spacebar
                 model.playerFire();
                 break;
-
         }
 
         /*

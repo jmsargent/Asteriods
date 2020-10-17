@@ -78,16 +78,22 @@ public class View extends JFrame {
         private void drawShots(Graphics g){
             g.setColor(Color.GREEN);
 
+            int x1 , x2 , y1 , y2 ;
 
+            for (int i = 0; i < model.getShotArray().length; i++) {
 
-            LinkedList<Shot> shots = model.getShots();
-            ListIterator drawShotsIterator = shots.listIterator();
+                if (model.getShotArray()[i] != null){
+                    x2 = (int) model.getShotArray()[i].getPosX();
+                    y2 = (int) model.getShotArray()[i].getPosY();
+                    x1 = (int) model.getShotArray()[i].getDrawFromX();
+                    y1 = (int) model.getShotArray()[i].getDrawFromY();
 
-
-            while(drawShotsIterator.hasNext()){
-
-                Shot shot = (Shot) drawShotsIterator.next();
-
+                    g.drawLine(x1,y1,x2,y2);
+                }
+                /*System.out.println("x1 :" +x1);
+                System.out.println("x2 :" +x2);
+                System.out.println("y1 :" +y1);
+                System.out.println("y2 :" +y2);*/
             }
         }
     }
