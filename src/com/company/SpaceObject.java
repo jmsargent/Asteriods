@@ -205,8 +205,6 @@ class Shot extends SpaceObject {
 
 class Spaceship extends SpaceObject {
 
-    private int nrOfShots;
-
 
 }
 
@@ -216,13 +214,38 @@ class Player extends Spaceship {
     private double[] xPoints, yPoints;
     private int nPoints,ammo,gunsReadyTimer,reloadTimer;
     private int[] rXPoints, rYPoints;
+    private double angle;
+    private boolean gunsReady; // limits rate of fire
+
+
+    public Player(int posX, int posY) {
+        this.gunsReady = true;
+        this.angle = 0;
+
+        this.ammo = 4;
+        this.reloadTimer = 90; // 45 fps => 2 sec reload
+        this.gunsReadyTimer = 15; // 1/3 sec rate of fire
+
+
+        // make doubles later
+        this.setPosX(posX);
+        this.setPosY(posY);
+
+        this.setDx(0);
+        this.setDy(0);
+
+
+        xPoints = new double[]{0, 10, -10}; // tip , rback , lback
+        yPoints = new double[]{20, -10, -10};
+        this.nPoints = 3;
+
+        this.setLife(1);
+        updatePlayerPolygon();
+    }
 
     public double getAngle() {
         return angle;
     }
-
-    private double angle;
-    private boolean gunsReady; // limits rate of fire
 
     public boolean isGunsReady() {
         return gunsReady;
@@ -273,29 +296,7 @@ class Player extends Spaceship {
 
 
 
-    public Player(int posX, int posY) {
-        this.gunsReady = true;
-        this.angle = 0;
 
-        this.reloadTimer = 90; // 45 fps => 2 sec reload
-        this.gunsReadyTimer = 15; // 1/3 sec rate of fire
-
-
-        // make doubles later
-        this.setPosX(posX);
-        this.setPosY(posY);
-
-        this.setDx(0);
-        this.setDy(0);
-
-
-        xPoints = new double[]{0, 10, -10}; // tip , rback , lback
-        yPoints = new double[]{20, -10, -10};
-        this.nPoints = 3;
-
-        this.setLife(1);
-        updatePlayerPolygon();
-    }
 
     public void updatePlayerPos() {
         setPosX(getDx() + getPosX());
