@@ -67,9 +67,7 @@ public class Controller{
                 model.getP1().accelerate(1);
                 break;
             case(32): // if spacebar
-                model.getP1().shoot();
-                model.createShot();
-                model.getP1().setGunsReady(false);
+                model.playerFire();
                 break;
 
         }
@@ -80,6 +78,8 @@ public class Controller{
         break;
         */
     }
+
+    // Should this be in model or in controller ?
 
 }
 // https://academo.org/demos/rotation-about-point/

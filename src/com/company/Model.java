@@ -13,43 +13,10 @@ public class Model {
     }
     private List<Shot> shots;
     private ListIterator shotsIterator;
-
-    public void createShot(){
-        this.shots.add(new Shot(p1.getPosX(),p1.getPosY(),p1.getAngle(),p1.getDx(),p1.getDy()));
-        addShotTimer();
-    }
-
-
-
-    private void incShotTimers(){
-        for (int i = 0; i < this.shots.size(); i++) {
-
-        }
-    }
-
-    private void removeOldestShot(){
-        this.shots.remove(this.shots.lastIndexOf(new Shot()));
-    }
-
-    public void resetReloadTimer() {
-        this.reloadTimer = 0;
-    }
-
-    private int reloadTimer;
-
-    public void setReloading(boolean reloading) {
-        this.reloading = reloading;
-    }
-
-    private boolean reloading = false;
-
     private List<SpaceObject> nonPlayerSpaceObjects;
     private Player p1;
     private Shot shot;
 
-    public Player getP1() {
-        return p1;
-    }
 
     public Model() {
         // initiate player in middle of screen
@@ -62,25 +29,46 @@ public class Model {
         nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
     }
 
+
+    private void createShot(){
+       // this.shots.add(new Shot(p1.getPosX(),p1.getPosY(),p1.getAngle(),p1.getDx(),p1.getDy()));
+    }
+
+    public void playerFire(){
+        if(p1.isGunsReady() && p1.getAmmo() > 0){
+            p1.shoot();
+            createShot();
+        }
+    }
+
+
+    private void removeOldestShot(){
+        this.shots.remove(this.shots.lastIndexOf(new Shot()));
+    }
+
+
+
+    public Player getP1() {
+        return p1;
+    }
+
     /**
      * Updates positioning and potentially adds / removes objects
      */
     public void tick() {
         updateObjectPositioning();
 
-        if(shots.contains(new Shot()))
+        updateTimers();
 
+        //System.out.println("dx is: " + p1.getDx());
+        //System.out.println("dy is: " + p1.getDy());
 
-        if(!p1.isGunsReady())
-            reloadTimer++;
+    }
 
+    private void updateTimers(){
 
-        if(reloadTimer == 45){
-            p1.setGunsReady(true);
-            this.reloadTimer = 0;
-            System.out.println("dx is: " + p1.getDx());
-            System.out.println("dy is: " + p1.getDy());
-        }
+        p1.decTimers();
+
     }
 
     private void updateObjectPositioning() {

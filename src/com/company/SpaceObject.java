@@ -12,6 +12,7 @@ public class SpaceObject {
     3) Ändra hårdkodning för dx (som är inverterad)
     4) skapa metod move i spaceObject som rör objekt i dess velocitets
        riktining, samt tar hänsyn till objetkets form / storlek
+    5) Skapa constructor för player
      */
 
     private Polygon blueprint;
@@ -213,7 +214,7 @@ class Spaceship extends SpaceObject {
 class Player extends Spaceship {
 
     private double[] xPoints, yPoints;
-    private int nPoints,ammo;
+    private int nPoints,ammo,gunsReadyTimer,reloadTimer;
     private int[] rXPoints, rYPoints;
 
     public double getAngle() {
@@ -221,7 +222,7 @@ class Player extends Spaceship {
     }
 
     private double angle;
-    private boolean gunsReady;
+    private boolean gunsReady; // limits rate of fire
 
     public boolean isGunsReady() {
         return gunsReady;
@@ -231,14 +232,43 @@ class Player extends Spaceship {
         this.gunsReady = gunsReady;
     }
 
+    public void incAmmo(){
+        this.ammo++;
+    }
 
-
-
+    public int getAmmo(){
+        return this.ammo;
+    }
 
     public void shoot(){
-        if(this.isGunsReady()){
-            this.gunsReady = false;
+        this.gunsReady = false;
+        this.ammo --;
+        System.out.println("pewpew");
+    }
+
+    public void decTimers(){
+
+
+        if(!this.gunsReady){
+            this.gunsReadyTimer --;
+
+            if(gunsReadyTimer == 0){
+                this.gunsReady = true;
+                this.gunsReadyTimer = 15;
+                System.out.println("Guns ready");
+            }
         }
+
+        if(this.ammo < 4){
+            this.reloadTimer --;
+
+            if(this.reloadTimer == 0){
+                this.ammo ++;
+                this.reloadTimer = 90;
+                System.out.println("ur current ammo is now: " + this.ammo);
+            }
+        }
+
     }
 
 
@@ -246,6 +276,11 @@ class Player extends Spaceship {
     public Player(int posX, int posY) {
         this.gunsReady = true;
         this.angle = 0;
+
+        this.reloadTimer = 90; // 45 fps => 2 sec reload
+        this.gunsReadyTimer = 15; // 1/3 sec rate of fire
+
+
         // make doubles later
         this.setPosX(posX);
         this.setPosY(posY);
