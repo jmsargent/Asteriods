@@ -102,33 +102,19 @@ public class SpaceObject {
     public void setDy(double dy) {
         this.dy = dy;
     }
-
-
-
-    private Color objColor;
-
-    public void collide() {
-    }
-
-    public void acellerate() {
-    }
-
 }
 
 class Asteroid extends SpaceObject {
 
-    public Asteroid(int x, int y, double dx, double dy) {
+    public Asteroid(int x, int y, double dx, double dy, int lives) {
         this.setPosX(x);
         this.setPosY(y);
 
         this.setDx(dx);
         this.setDy(dy);
 
-        this.setLife(2);
+        this.setLife(lives);
     }
-
-
-
 
 }
 
@@ -289,8 +275,6 @@ class Player extends Spaceship {
         }
 
     }
-
-
 
 
     // its quirky that this and move in shots exists simoltaneously

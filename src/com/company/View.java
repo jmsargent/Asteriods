@@ -58,18 +58,18 @@ public class View extends JFrame {
 
             super.paintComponent(g);
             super.setBackground(Color.BLACK);
-            //g.setColor(Color.WHITE);
-            //g.drawOval(50,50,50,50);
+
             drawPlayer(g);
             drawShots(g);
             drawBigAsteroids(g);
             g.setColor(Color.GRAY);
-            //g.line
-            /*
-            while (toDrawIt.hasNext()){
-                g.fillPolygon(toDrawIt.next());
+
+            if(model.isGameOver()){
+                super.setBackground(Color.WHITE);
+                g.setColor(Color.BLACK);
+                g.drawString("Game Over", 300, 300);
             }
-             */
+
         }
 
 
@@ -110,8 +110,8 @@ public class View extends JFrame {
                     g.fillOval(
                             (int) model.getAsteroidArr()[i].getPosX(),
                             (int) model.getAsteroidArr()[i].getPosY(),
-                            model.getAsteroidArr()[i].getLife() * 50,
-                            model.getAsteroidArr()[i].getLife() * 50
+                            model.getAsteroidArr()[i].getLife() * 33,
+                            model.getAsteroidArr()[i].getLife() * 33
                     );
                 }
             }

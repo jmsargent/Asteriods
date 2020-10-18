@@ -5,34 +5,30 @@ import java.util.*;
 public class Model {
 
     private Shot[] shotArray;
+    private boolean gameOver;
+    private Asteroid[] asteroidArr;
+    Random rand;
+    private Player p1; //= new Player(300, 300);
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
 
     public Asteroid[] getAsteroidArr() {
         return asteroidArr;
     }
-
-    private Asteroid[] asteroidArr;
-    private Asteroid[] smallAsteroidArr;
-    Random rand;
-
-
-    private Player p1; //= new Player(300, 300);
-    private Shot shot;
-
 
     public Model() {
         // initiate player in middle of screen
         p1 = new Player(300, 300);
         shotArray = new Shot[4];
         rand = new Random();
-
-        spawnAsteroids(4);
+        gameOver = false;
+        spawnAsteroids(4, 3);
 
         for (int i = 0; i < 4; i++) {
             shotArray[i] = null;
         }
-
-        //    nonPlayerSpaceObjects = new LinkedList<SpaceObject>();
-        //    nonPlayerSpaceObjects.add(new Asteroid(50, 50, 10, 10));
     }
 
     public Shot[] getShotArray() {
@@ -45,21 +41,14 @@ public class Model {
     private void createShot() {
 
         for (int i = 0; i < 4; i++) {
-            if(shotArray[i] == null){
-                System.out.println("tipX:" +p1.getTip()[0]);
-                System.out.println("tipY:" +p1.getTip()[1]);
+            if (shotArray[i] == null) {
+                System.out.println("tipX:" + p1.getTip()[0]);
+                System.out.println("tipY:" + p1.getTip()[1]);
                 shotArray[i] = new Shot(p1.getTip(), p1.getAngle(), p1.getDx(), p1.getDy());
-                break ;
+                break;
             }
         }
         System.out.println("angle :" + p1.getAngle());
-
-        /*
-        System.out.println(p1.getPosX());
-        System.out.println(p1.getPosY());
-        System.out.println(p1.getDx());
-        System.out.println(p1.getDy());
-         */
     }
 
     public void playerFire() {
@@ -78,14 +67,11 @@ public class Model {
      * Updates positioning and potentially adds / removes objects
      */
     public void tick() {
-
-        updateTimers();
-        updateObjectPositioning();
-        calcColissions();
-
-        //System.out.println("dx is: " + p1.getDx());
-        //System.out.println("dy is: " + p1.getDy());
-
+        if (!gameOver) {
+            updateTimers();
+            updateObjectPositioning();
+            calcColissions();
+        }
     }
 
     private void updateTimers() {
@@ -97,99 +83,95 @@ public class Model {
 
         updateShotsPositioning();
         updateAsteroidPositioning();
-
-        /*for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
-            nonPlayerSpaceObject.updatePos();
-        }*/
     }
 
-    private void updateAsteroidPositioning(){
+    private void updateAsteroidPositioning() {
         for (int i = 0; i < this.asteroidArr.length; i++) {
-            if(this.getAsteroidArr()[i] != null){
+            if (this.getAsteroidArr()[i] != null) {
                 this.asteroidArr[i].updatePos();
             }
         }
     }
-    
+
     /**
      * updates position of all shots
      */
     private void updateShotsPositioning() {
-            for (int i = 0; i < 4; i++) {
-                if (shotArray[i] != null) {
-                    shotArray[i].move();
+        for (int i = 0; i < 4; i++) {
+            if (shotArray[i] != null) {
+                shotArray[i].move();
 
-                    if(shotArray[i].isOutOfBounds()){
-                        shotArray[i] = null;
-                    }
-
+                if (shotArray[i].isOutOfBounds()) {
+                    shotArray[i] = null;
                 }
             }
-
+        }
     }
 
-    private void spawnAsteroids(int nrOfAsteroids){
+    private void spawnAsteroids(int nrOfAsteroids, int lives) {
 
         int[] validSpawnLocation = getValidSpawnLocation();
         double[] randomVelocity = getRndBigVel();
 
-        System.out.println("validspawnLoc:");
-        System.out.println(validSpawnLocation.toString());
+        this.asteroidArr = new Asteroid[nrOfAsteroids * lives];
 
-        System.out.println("randomVel:");
-        System.out.println(randomVelocity.toString());
+        for(int i = 0 i < 4)
+        createNewAsteroids(nrOfAsteroids, lives,validSpawnLocation);
+    }
 
+    private void createNewAsteroids(int nrOfAsteroids, int lives, int[] spawnLocation) {
 
-        this.asteroidArr = new Asteroid[nrOfAsteroids];
-
+        double[] randomVelocity = getRndBigVel();
         for (int i = 0; i < nrOfAsteroids; i++) {
-            // note for self : x,y,dx,dy
-            this.asteroidArr[i] = new Asteroid(validSpawnLocation[0],validSpawnLocation[1],randomVelocity[0],randomVelocity[1]);
-            validSpawnLocation = getValidSpawnLocation();
-            randomVelocity = getRndBigVel();
-
-            System.out.println("loop number:" + i);
+            if (this.asteroidArr[i] == null) {
+                // note for self : x,y,dx,dy
+                this.asteroidArr[i] = new Asteroid(spawnLocation[0], spawnLocation[1], randomVelocity[0], randomVelocity[1], lives);
+                validSpawnLocation = getValidSpawnLocation();
+                randomVelocity = getRndBigVel();
+            }
         }
     }
 
     /**
      * returns as {latitude, coordinate}
+     *
      * @return
      */
-    private int[] getValidSpawnLocation(){
+    private int[] getValidSpawnLocation() {
 
         // 1-north 2-east 3-west 4-south
 
-        int latitude = this.rand.nextInt()%4;
-        int coordinate = this.rand.nextInt()%300;
+        int latitude = this.rand.nextInt() % 4;
+        int coordinate = this.rand.nextInt() % 300;
 
-        switch (latitude){
-            case(1): // north
-                return new int[]{0,coordinate};
-            case(2):
-                return new int[]{coordinate,600};
-            case(3):
-                return new int[]{coordinate,0};
-            case(4):
-                return new int[]{600,coordinate};
-            default: return new int[]{6000 ,6000}; // this will never happen but compiler complains if i dont
+        switch (latitude) {
+            case (1): // north
+                return new int[]{0, coordinate};
+            case (2):
+                return new int[]{coordinate, 600};
+            case (3):
+                return new int[]{coordinate, 0};
+            case (4):
+                return new int[]{600, coordinate};
+            default:
+                return new int[]{6000, 6000}; // this will never happen but compiler complains if i dont
         }
     }
 
-    private double[] getRndBigVel(){
+    private double[] getRndBigVel() {
 
         // I had to, sorry , I know it doesn't follow conventions
         double MaxWell = 1.2;
 
-        return new double[]{(0.5+rand.nextDouble())%MaxWell,(0.5+ rand.nextDouble())%MaxWell};
+        return new double[]{(0.5 + rand.nextDouble()) % MaxWell, (0.5 + rand.nextDouble()) % MaxWell};
     }
 
-    private void calcColissions(){
+    private void calcColissions() {
         calcShotAsteroidCollision();
         calcPlayerAsteroidCollision();
     }
 
-    private void calcShotAsteroidCollision(){
+    private void calcShotAsteroidCollision() {
 
         double[] difference;
         double distance;
@@ -197,44 +179,48 @@ public class Model {
         for (int i = 0; i < this.shotArray.length; i++) {
             for (int j = 0; j < this.asteroidArr.length; j++) {
                 // if both currently compared indices contain any obj...
-                if (this.shotArray[i] != null && this.asteroidArr[j] != null){
+                if (this.shotArray[i] != null && this.asteroidArr[j] != null) {
                     // ...calc distance between the tip of the shot and the middlepoint of the asteroid
                     difference = MyMath.vectorSubtraction(
-                            new double[]{this.shotArray[i].getPosX(),this.shotArray[i].getPosY()},
-                            new double[]{this.asteroidArr[j].getPosX(),this.asteroidArr[j].getPosY()}
-                            );
+                            new double[]{this.shotArray[i].getPosX(), this.shotArray[i].getPosY()},
+                            new double[]{this.asteroidArr[j].getPosX(), this.asteroidArr[j].getPosY()}
+                    );
 
                     distance = MyMath.vectorLength(difference);
 
                     // if distance between points is less than the radius of the asteroid
-                    if(distance < (this.asteroidArr[j].getLife()*50)){
-                        this.asteroidArr[j] = null;
+                    if (distance < (this.asteroidArr[j].getLife() * 33)) {
                         this.shotArray[i] = null;
+                        if (this.asteroidArr[i].getLife() > 1) {
+                            createNewAsteroids(3, this.asteroidArr[i].getLife() - 1);
+                        }
+                        this.asteroidArr[j] = null;
                     }
                 }
             }
         }
     }
 
-    private void calcPlayerAsteroidCollision(){
+    private void calcPlayerAsteroidCollision() {
 
         double[] difference;
         double distance;
 
         for (int i = 0; i < asteroidArr.length; i++) {
-            if (asteroidArr[i] != null){
+            if (asteroidArr[i] != null) {
             /* calculate difference between the position of the middlepoint of the player and the center of
             an asteroid */
-            difference = MyMath.vectorSubtraction(
-                    new double[]{p1.getPosX(),p1.getPosY()},
-                    new double[]{asteroidArr[i].getPosX(),asteroidArr[i].getPosY()}
-                    );
+                difference = MyMath.vectorSubtraction(
+                        new double[]{p1.getPosX(), p1.getPosY()},
+                        new double[]{asteroidArr[i].getPosX(), asteroidArr[i].getPosY()}
+                );
 
-            distance = MyMath.vectorLength(difference);
+                distance = MyMath.vectorLength(difference);
 
-            if (distance < asteroidArr[i].getLife()*50){
-                System.out.println("NOOB");
+                if (distance < asteroidArr[i].getLife() * 33) {
+                    this.gameOver = true;
+                }
             }
-        }}
+        }
     }
 }

@@ -54,8 +54,8 @@ public class Controller{
 
     private void handleInput(KeyEvent e, String metodId){
         //System.out.println(metodId);
-        //System.out.println( e.getKeyCode()) ;
-
+        System.out.println( e.getKeyCode()) ;
+        //27
         switch (e.getKeyCode()){
             case (37): // right arrow
                 model.getP1().rotateShip("right");
@@ -69,6 +69,8 @@ public class Controller{
             case(32): // if spacebar
                 model.playerFire();
                 break;
+            case(27): // if esc
+                System.exit(0);
         }
 
         /*
