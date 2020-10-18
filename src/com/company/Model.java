@@ -115,19 +115,25 @@ public class Model {
 
         this.asteroidArr = new Asteroid[nrOfAsteroids * lives];
 
-        for(int i = 0 i < 4)
-        createNewAsteroids(nrOfAsteroids, lives,validSpawnLocation);
+        for (int i = 0; i < nrOfAsteroids; ++i) {
+            createNewAsteroids(1, lives, validSpawnLocation);
+            validSpawnLocation = getValidSpawnLocation();
+        }
     }
 
     private void createNewAsteroids(int nrOfAsteroids, int lives, int[] spawnLocation) {
 
+        int asteroidstoCreate = nrOfAsteroids;
         double[] randomVelocity = getRndBigVel();
-        for (int i = 0; i < nrOfAsteroids; i++) {
+        for (int i = 0; i < this.asteroidArr.length; i++) {
             if (this.asteroidArr[i] == null) {
                 // note for self : x,y,dx,dy
                 this.asteroidArr[i] = new Asteroid(spawnLocation[0], spawnLocation[1], randomVelocity[0], randomVelocity[1], lives);
-                validSpawnLocation = getValidSpawnLocation();
                 randomVelocity = getRndBigVel();
+                asteroidstoCreate --;
+
+                if(asteroidstoCreate == 0)
+                    break;
             }
         }
     }
@@ -191,8 +197,9 @@ public class Model {
                     // if distance between points is less than the radius of the asteroid
                     if (distance < (this.asteroidArr[j].getLife() * 33)) {
                         this.shotArray[i] = null;
-                        if (this.asteroidArr[i].getLife() > 1) {
-                            createNewAsteroids(3, this.asteroidArr[i].getLife() - 1);
+                        if (this.asteroidArr[j].getLife() > 0) {
+                            createNewAsteroids(3, this.asteroidArr[j].getLife() - 1,
+                                    new int[]{(int) this.asteroidArr[j].getPosX(), (int) this.asteroidArr[j].getPosY()});
                         }
                         this.asteroidArr[j] = null;
                     }
