@@ -1,6 +1,6 @@
 package com.company;
 
-public class Main {
+public class Asteroids {
 
     // http://www.classicgaming.cc/classics/asteroids/graphics
 
@@ -8,7 +8,6 @@ public class Main {
 	// write your code here
         Model model = new Model();
         View view = new View(model);
-
 
         Controller controller = new Controller(view, model);
     }

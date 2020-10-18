@@ -128,4 +128,8 @@ public class MyMath {
         }
         return sum;
     }
+
+    public static int vectorLength(){
+
+    }
 }

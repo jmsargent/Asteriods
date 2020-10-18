@@ -104,13 +104,13 @@ public class View extends JFrame {
         private void drawBigAsteroids(Graphics g) {
             g.setColor(Color.CYAN);
 
-            for (int i = 0; i < model.getBigAsteroidArr().length; i++) {
+            for (int i = 0; i < model.getAsteroidArr().length; i++) {
 
                 g.fillOval(
-                        (int) model.getBigAsteroidArr()[i].getPosX(),
-                        (int) model.getBigAsteroidArr()[i].getPosY(),
-                        model.getBigAsteroidArr()[i].getLife() * 50,
-                        model.getBigAsteroidArr()[i].getLife() * 50
+                        (int) model.getAsteroidArr()[i].getPosX(),
+                        (int) model.getAsteroidArr()[i].getPosY(),
+                        model.getAsteroidArr()[i].getLife() * 50,
+                        model.getAsteroidArr()[i].getLife() * 50
                 );
             }
         }

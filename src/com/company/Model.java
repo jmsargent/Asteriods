@@ -1,18 +1,16 @@
 package com.company;
 
-import java.awt.*;
 import java.util.*;
-import java.util.List;
 
 public class Model {
 
     private Shot[] shotArray;
 
-    public Asteroid[] getBigAsteroidArr() {
-        return bigAsteroidArr;
+    public Asteroid[] getAsteroidArr() {
+        return asteroidArr;
     }
 
-    private Asteroid[] bigAsteroidArr;
+    private Asteroid[] asteroidArr;
     private Asteroid[] smallAsteroidArr;
     Random rand;
 
@@ -97,6 +95,7 @@ public class Model {
 
         updateShotsPositioning();
         updateAsteroidPositioning();
+        calcColissions();
 
         /*for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
             nonPlayerSpaceObject.updatePos();
@@ -104,8 +103,8 @@ public class Model {
     }
 
     private void updateAsteroidPositioning(){
-        for (int i = 0; i < this.bigAsteroidArr.length; i++) {
-            this.bigAsteroidArr[i].updatePos();
+        for (int i = 0; i < this.asteroidArr.length; i++) {
+            this.asteroidArr[i].updatePos();
         }
     }
     
@@ -138,11 +137,11 @@ public class Model {
         System.out.println(randomVelocity.toString());
 
 
-        this.bigAsteroidArr = new Asteroid[nrOfAsteroids];
+        this.asteroidArr = new Asteroid[nrOfAsteroids];
 
         for (int i = 0; i < nrOfAsteroids; i++) {
             // note for self : x,y,dx,dy
-            this.bigAsteroidArr[i] = new Asteroid(validSpawnLocation[0],validSpawnLocation[1],randomVelocity[0],randomVelocity[1]);
+            this.asteroidArr[i] = new Asteroid(validSpawnLocation[0],validSpawnLocation[1],randomVelocity[0],randomVelocity[1]);
             validSpawnLocation = getValidSpawnLocation();
             randomVelocity = getRndBigVel();
 
@@ -180,5 +179,25 @@ public class Model {
         double MaxWell = 1.2;
 
         return new double[]{(0.5+rand.nextDouble())%MaxWell,(0.5+ rand.nextDouble())%MaxWell};
+    }
+
+    private void calcColissions(){
+        calcShotAsteroidCollision();
+    }
+
+    private void calcShotAsteroidCollision(){
+
+        int[] shotTipPos
+
+        for (int i = 0; i < this.shotArray.length; i++) {
+            for (int j = 0; j < this.asteroidArr.length; j++) {
+
+                // if both currently compared indices contain any obj...
+                if (this.shotArray[i] != null && this.asteroidArr[j] != null){
+                    // ...calc distance between the tip of the shot and the middlepoint of the asteroid
+
+                }
+            }
+        }
     }
 }
