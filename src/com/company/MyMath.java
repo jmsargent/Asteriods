@@ -129,7 +129,29 @@ public class MyMath {
         return sum;
     }
 
-    public static int vectorLength(){
+    public static double vectorLength(double[] vector){
 
+        double length = 0;
+
+        for (int i = 0; i < vector.length; i++) {
+            length = length + Math.pow(vector[i],2.0);
+        }
+
+        return (Math.sqrt(length));
+    }
+
+    public static double[] vectorSubtraction(double[] v1, double[] v2){
+
+        if (v1.length != v2.length)
+            throw new ArrayIndexOutOfBoundsException("This method only accepts 2 arrays of the same length.");
+
+
+        double[] difference = new double[v1.length];
+
+        for (int i = 0; i < v1.length; i++) {
+            difference[i] = v1[i] - v2[i];
+        }
+
+        return difference;
     }
 }

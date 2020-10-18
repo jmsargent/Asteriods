@@ -104,7 +104,9 @@ public class Model {
 
     private void updateAsteroidPositioning(){
         for (int i = 0; i < this.asteroidArr.length; i++) {
-            this.asteroidArr[i].updatePos();
+            if(this.getAsteroidArr()[i] != null){
+                this.asteroidArr[i].updatePos();
+            }
         }
     }
     
@@ -187,7 +189,8 @@ public class Model {
 
     private void calcShotAsteroidCollision(){
 
-        int[] shotTipPos
+        double[] difference;
+        double distance;
 
         for (int i = 0; i < this.shotArray.length; i++) {
             for (int j = 0; j < this.asteroidArr.length; j++) {
@@ -196,6 +199,20 @@ public class Model {
                 if (this.shotArray[i] != null && this.asteroidArr[j] != null){
                     // ...calc distance between the tip of the shot and the middlepoint of the asteroid
 
+
+                    difference = MyMath.vectorSubtraction(
+                            new double[]{this.shotArray[i].getPosX(),this.shotArray[i].getPosY()},
+                            new double[]{this.asteroidArr[j].getPosX(),this.asteroidArr[j].getPosY()}
+                            );
+
+
+                    distance = MyMath.vectorLength(difference);
+
+                    // if distance between points is less than the radius of the asteroid
+                    if(distance < (this.asteroidArr[j].getLife()*50)){
+                        this.asteroidArr[j] = null;
+                        this.shotArray[i] = null;
+                    }
                 }
             }
         }

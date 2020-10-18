@@ -106,12 +106,14 @@ public class View extends JFrame {
 
             for (int i = 0; i < model.getAsteroidArr().length; i++) {
 
-                g.fillOval(
-                        (int) model.getAsteroidArr()[i].getPosX(),
-                        (int) model.getAsteroidArr()[i].getPosY(),
-                        model.getAsteroidArr()[i].getLife() * 50,
-                        model.getAsteroidArr()[i].getLife() * 50
-                );
+                if(model.getAsteroidArr()[i] != null){
+                    g.fillOval(
+                            (int) model.getAsteroidArr()[i].getPosX(),
+                            (int) model.getAsteroidArr()[i].getPosY(),
+                            model.getAsteroidArr()[i].getLife() * 50,
+                            model.getAsteroidArr()[i].getLife() * 50
+                    );
+                }
             }
         }
     }
