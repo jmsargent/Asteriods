@@ -5,10 +5,16 @@ import java.awt.geom.Line2D;
 
 public class SpaceObject {
 
-
+    private int sizeX,sizeY;
     private Polygon blueprint;
     private int life;
     private double posX;
+    private double posY;
+    private int radius; // used to create hitbox
+
+    // velocity vars
+    private double dx, dy;
+
 
     // This should exist fix it
     public void move(){
@@ -22,9 +28,12 @@ public class SpaceObject {
        riktining, samt tar hänsyn till objetkets form / storlek
     5) Skapa constructor för player
     6) Skapa move som metod till SpaceObject
+    7) Snälla gör alla kordinater till int, det finns inga decimala pixlar
      */
 
-
+    public int getRadius() {
+        return radius;
+    }
 
     public void updatePos() {
 
@@ -32,38 +41,18 @@ public class SpaceObject {
         this.posY = this.posY + this.dy;
 
 
-        if (this.posX > 609)
-            this.posX = -9;
-        if (this.posX < -9)
-            this.posX = 609;
+        if (this.posX > 600 + this.sizeX)
+            this.posX = -this.sizeX;
+        if (this.posX < -this.sizeX)
+            this.posX = 600 + this.sizeX;
 
-        if (this.posY > 609)
-            this.posY = -9;
-        if (this.posY < -9)
-            this.posY = 609;
+        if (this.posY > 600 + this.sizeY)
+            this.posY = -this.sizeY;
+        if (this.posY < -this.sizeY)
+            this.posY = 600+this.sizeY;
 
-
-        updatePolygon();
     }
 
-    private void updatePolygon() {
-        Polygon p = new Polygon();
-
-        p.addPoint((int) this.posX - 3, (int) this.posY - 1);
-        p.addPoint((int) this.posX - 1, (int) this.posY - 1);
-        p.addPoint((int) this.posX - 1, (int) this.posY - 3);
-        p.addPoint((int) this.posX + 1, (int) this.posY - 3);
-        p.addPoint((int) this.posX + 1, (int) this.posY - 1);
-        p.addPoint((int) this.posX + 3, (int) this.posY - 1);
-        p.addPoint((int) this.posX + 3, (int) this.posY + 1);
-        p.addPoint((int) this.posX + 1, (int) this.posY + 1);
-        p.addPoint((int) this.posX + 1, (int) this.posY + 3);
-        p.addPoint((int) this.posX - 1, (int) this.posY + 3);
-        p.addPoint((int) this.posX - 1, (int) this.posY + 1);
-        p.addPoint((int) this.posX - 3, (int) this.posY + 1);
-
-        this.blueprint = p;
-    }
 
 
     public Polygon getBlueprint() {
@@ -114,10 +103,7 @@ public class SpaceObject {
         this.dy = dy;
     }
 
-    private double posY;
 
-    // velocity vars
-    private double dx, dy;
 
     private Color objColor;
 
@@ -131,13 +117,19 @@ public class SpaceObject {
 
 class Asteroid extends SpaceObject {
 
-    public Asteroid(int x, int y, int dx, int dy) {
+    public Asteroid(int x, int y, double dx, double dy) {
         this.setPosX(x);
         this.setPosY(y);
 
         this.setDx(dx);
         this.setDy(dy);
+
+        this.setLife(2);
     }
+
+
+
+
 }
 
 class Shot extends SpaceObject {
@@ -322,7 +314,6 @@ class Player extends Spaceship {
 
     }
 
-
     private void updatePlayerPolygon() {
 
 
@@ -378,17 +369,14 @@ class Player extends Spaceship {
         boolean isNegative;
         //System.out.println(this.angle);
 
-
         vector = MyMath.toCartesian(this.angle, 0.2);
 
         this.setDx(this.getDx() - vector[1]); // testa om fungerar
         this.setDy(this.getDy() + vector[0]);
-
     }
 
     /*
     public void hyperDrive(){
-
     }*/
 }
 

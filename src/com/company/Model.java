@@ -8,6 +8,15 @@ public class Model {
 
     private Shot[] shotArray;
 
+    public Asteroid[] getBigAsteroidArr() {
+        return bigAsteroidArr;
+    }
+
+    private Asteroid[] bigAsteroidArr;
+    private Asteroid[] smallAsteroidArr;
+    Random rand;
+
+
     private Player p1; //= new Player(300, 300);
     private Shot shot;
 
@@ -16,6 +25,9 @@ public class Model {
         // initiate player in middle of screen
         p1 = new Player(300, 300);
         shotArray = new Shot[4];
+        rand = new Random();
+
+        spawnAsteroids(4);
 
         for (int i = 0; i < 4; i++) {
             shotArray[i] = null;
@@ -84,12 +96,19 @@ public class Model {
         p1.updatePlayerPos();
 
         updateShotsPositioning();
+        updateAsteroidPositioning();
 
         /*for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
             nonPlayerSpaceObject.updatePos();
         }*/
     }
 
+    private void updateAsteroidPositioning(){
+        for (int i = 0; i < this.bigAsteroidArr.length; i++) {
+            this.bigAsteroidArr[i].updatePos();
+        }
+    }
+    
     /**
      * updates position of all shots
      */
@@ -105,5 +124,61 @@ public class Model {
                 }
             }
 
+    }
+
+    private void spawnAsteroids(int nrOfAsteroids){
+
+        int[] validSpawnLocation = getValidSpawnLocation();
+        double[] randomVelocity = getRndBigVel();
+
+        System.out.println("validspawnLoc:");
+        System.out.println(validSpawnLocation.toString());
+
+        System.out.println("randomVel:");
+        System.out.println(randomVelocity.toString());
+
+
+        this.bigAsteroidArr = new Asteroid[nrOfAsteroids];
+
+        for (int i = 0; i < nrOfAsteroids; i++) {
+            // note for self : x,y,dx,dy
+            this.bigAsteroidArr[i] = new Asteroid(validSpawnLocation[0],validSpawnLocation[1],randomVelocity[0],randomVelocity[1]);
+            validSpawnLocation = getValidSpawnLocation();
+            randomVelocity = getRndBigVel();
+
+            System.out.println("loop number:" + i);
+        }
+    }
+
+    /**
+     * returns as {latitude, coordinate}
+     * @return
+     */
+    private int[] getValidSpawnLocation(){
+
+        // 1-north 2-east 3-west 4-south
+
+        int latitude = this.rand.nextInt()%4;
+        int coordinate = this.rand.nextInt()%300;
+
+        switch (latitude){
+            case(1): // north
+                return new int[]{0,coordinate};
+            case(2):
+                return new int[]{coordinate,600};
+            case(3):
+                return new int[]{coordinate,0};
+            case(4):
+                return new int[]{600,coordinate};
+            default: return new int[]{6000 ,6000}; // this will never happen but compiler complains if i dont
+        }
+    }
+
+    private double[] getRndBigVel(){
+
+        // I had to, sorry , I know it doesn't follow conventions
+        double MaxWell = 1.2;
+
+        return new double[]{(0.5+rand.nextDouble())%MaxWell,(0.5+ rand.nextDouble())%MaxWell};
     }
 }
