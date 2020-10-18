@@ -81,6 +81,8 @@ public class Model {
 
         updateTimers();
         updateObjectPositioning();
+        calcColissions();
+
         //System.out.println("dx is: " + p1.getDx());
         //System.out.println("dy is: " + p1.getDy());
 
@@ -95,7 +97,6 @@ public class Model {
 
         updateShotsPositioning();
         updateAsteroidPositioning();
-        calcColissions();
 
         /*for (SpaceObject nonPlayerSpaceObject : nonPlayerSpaceObjects) {
             nonPlayerSpaceObject.updatePos();
@@ -185,6 +186,7 @@ public class Model {
 
     private void calcColissions(){
         calcShotAsteroidCollision();
+        calcPlayerAsteroidCollision();
     }
 
     private void calcShotAsteroidCollision(){
@@ -194,17 +196,13 @@ public class Model {
 
         for (int i = 0; i < this.shotArray.length; i++) {
             for (int j = 0; j < this.asteroidArr.length; j++) {
-
                 // if both currently compared indices contain any obj...
                 if (this.shotArray[i] != null && this.asteroidArr[j] != null){
                     // ...calc distance between the tip of the shot and the middlepoint of the asteroid
-
-
                     difference = MyMath.vectorSubtraction(
                             new double[]{this.shotArray[i].getPosX(),this.shotArray[i].getPosY()},
                             new double[]{this.asteroidArr[j].getPosX(),this.asteroidArr[j].getPosY()}
                             );
-
 
                     distance = MyMath.vectorLength(difference);
 
@@ -216,5 +214,27 @@ public class Model {
                 }
             }
         }
+    }
+
+    private void calcPlayerAsteroidCollision(){
+
+        double[] difference;
+        double distance;
+
+        for (int i = 0; i < asteroidArr.length; i++) {
+            if (asteroidArr[i] != null){
+            /* calculate difference between the position of the middlepoint of the player and the center of
+            an asteroid */
+            difference = MyMath.vectorSubtraction(
+                    new double[]{p1.getPosX(),p1.getPosY()},
+                    new double[]{asteroidArr[i].getPosX(),asteroidArr[i].getPosY()}
+                    );
+
+            distance = MyMath.vectorLength(difference);
+
+            if (distance < asteroidArr[i].getLife()*50){
+                System.out.println("NOOB");
+            }
+        }}
     }
 }
