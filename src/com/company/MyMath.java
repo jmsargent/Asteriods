@@ -6,14 +6,8 @@ import java.util.stream.Stream;
 
 public class MyMath {
 
-    /**
-     * Adds constant to every every indice of array
-     * @param a
-     * @param b
-     * @return
-     */
 
-    public static int[] arrayConstAddition(int a[], int b){
+    public static int[] arrayConstAddition(int[] a, int b){
 
         int[] sum = new int[a.length];
 
