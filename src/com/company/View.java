@@ -3,30 +3,22 @@ package com.company;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyListener;
-import java.util.*;
-import java.util.List;
 
 public class View extends JFrame {
 
-
+    // class vars
     private Model model;
     private Space space;
     private KeyListener k;
 
-   /* public void setKeyListener(KeyListener k){
-        this.addKeyListener(k);
-    }*/
-
-    public void setKeyListener(KeyListener k) {
-        this.k = k;
-    }
+    // constructors
 
     public View(Model model) {
 
         this.model = model;
         this.space = new Space();
         this.add(space);
-        this.addKeyListener(this.k);
+
         // basic settings for Jframe
         this.setSize(600, 600);
         this.setVisible(true);
@@ -40,81 +32,62 @@ public class View extends JFrame {
 
     private class Space extends JPanel {
 
-
-        private List<Polygon> toDraw = new LinkedList<>();
-        private Iterator<Polygon> toDrawIt = toDraw.iterator();
-
-
-        /*
-        public void updateToDraw(){
-            for (int i = 0; i <model.getNonPlayerSpaceObjects().size() ; i++) {
-                toDraw.add(model.getNonPlayerSpaceObjects().get(i).getBlueprint());
-            }
-        }*/
-
-
         @Override
         protected void paintComponent(Graphics g) {
 
             super.paintComponent(g);
             super.setBackground(Color.BLACK);
 
-            drawPlayer(g);
-            drawShots(g);
-            drawBigAsteroids(g);
-            g.setColor(Color.GRAY);
+            drawSO(g);
 
-            if(model.isGameOver()){
-                super.setBackground(Color.WHITE);
-                g.setColor(Color.BLACK);
-                g.drawString("Game Over", 300, 300);
-            }
-
+            if (model.isGameOver())
+                paintGameOver(g);
         }
 
+        private void drawSO(Graphics g) {
+            g.setColor(Color.RED);
+            drawPlayer(g);
+
+            g.setColor(Color.GREEN);
+            drawShots(g);
+
+            g.setColor(Color.CYAN);
+            drawAsteroids(g);
+        }
 
         private void drawPlayer(Graphics g) {
-            g.setColor(Color.RED);
-            g.fillPolygon(model.getP1().getBlueprint());
+            g.fillPolygon(model.getPlayer().getBlueprint());
         }
 
-
         private void drawShots(Graphics g) {
-            g.setColor(Color.GREEN);
 
-            int x1, x2, y1, y2;
+            int[] points;
 
-            for (int i = 0; i < model.getShotArray().length; i++) {
+            for (Shot shot : model.getShotArray()) {
 
-                if (model.getShotArray()[i] != null) {
-                    x2 = (int) model.getShotArray()[i].getPosX();
-                    y2 = (int) model.getShotArray()[i].getPosY();
-                    x1 = (int) model.getShotArray()[i].getDrawFromX();
-                    y1 = (int) model.getShotArray()[i].getDrawFromY();
-
-                    g.drawLine(x1, y1, x2, y2);
+                if (shot != null) {
+                    points = shot.getBluePrint();
+                    g.drawLine(points[0], points[1], points[2], points[3]);
                 }
-                /*System.out.println("x1 :" +x1);
-                System.out.println("x2 :" +x2);
-                System.out.println("y1 :" +y1);
-                System.out.println("y2 :" +y2);*/
             }
         }
 
-        private void drawBigAsteroids(Graphics g) {
-            g.setColor(Color.CYAN);
+        private void drawAsteroids(Graphics g) {
 
-            for (int i = 0; i < model.getAsteroidArr().length; i++) {
-
-                if(model.getAsteroidArr()[i] != null){
+            for (Asteroid asteroid : model.getAsteroidArr()) {
+                if (asteroid != null) {
                     g.fillOval(
-                            (int) model.getAsteroidArr()[i].getPosX(),
-                            (int) model.getAsteroidArr()[i].getPosY(),
-                            model.getAsteroidArr()[i].getLife() * 33,
-                            model.getAsteroidArr()[i].getLife() * 33
+                            (int) asteroid.getPosX(), (int) asteroid.getPosY(),
+                            asteroid.getLife() * 33, asteroid.getLife() * 33
                     );
                 }
             }
+        }
+
+        private void paintGameOver(Graphics g) {
+            super.setBackground(Color.WHITE);
+            g.setColor(Color.BLACK);
+            g.drawString("Game Over", 300, 300);
         }
     }
 }

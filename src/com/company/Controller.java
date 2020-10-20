@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Timer;
 
 public class Controller{
 
@@ -19,15 +18,14 @@ public class Controller{
 
     public Controller(View view, Model model){
         this.view = view;
-        view.addKeyListener(kl);
+        view.addKeyListener(keyListener);
         this.model = model;
-        timer = new javax.swing.Timer(22, al);
 
+        timer = new javax.swing.Timer(22, actionListener);
         timer.start();
-
     }
 
-    private ActionListener al = new ActionListener() {
+    private ActionListener actionListener = new ActionListener() {
         @Override
         public void actionPerformed(ActionEvent e) {
             model.tick();
@@ -35,7 +33,7 @@ public class Controller{
         }
     };
 
-    private KeyListener kl = new KeyListener() {
+    private KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
             handleInput(e, "keyTyped");
@@ -58,13 +56,13 @@ public class Controller{
         //27
         switch (e.getKeyCode()){
             case (37): // right arrow
-                model.getP1().rotateShip("right");
+                model.getPlayer().rotateShip("right");
                 break;
             case(39): // left arrow
-                model.getP1().rotateShip("left");
+                model.getPlayer().rotateShip("left");
                 break;
             case(38): // uparrow
-                model.getP1().accelerate(1);
+                model.getPlayer().accelerate(1);
                 break;
             case(32): // if spacebar
                 model.playerFire();
@@ -79,8 +77,5 @@ public class Controller{
         break;
         */
     }
-
-    // Should this be in model or in controller ?
-
 }
 // https://academo.org/demos/rotation-about-point/

@@ -8,7 +8,7 @@ public class Model {
     private boolean gameOver;
     private Asteroid[] asteroidArr;
     Random rand;
-    private Player p1; //= new Player(300, 300);
+    private Player player; //= new Player(300, 300);
 
     public boolean isGameOver() {
         return gameOver;
@@ -20,7 +20,7 @@ public class Model {
 
     public Model() {
         // initiate player in middle of screen
-        p1 = new Player(300, 300);
+        player = new Player(300, 300);
         shotArray = new Shot[4];
         rand = new Random();
         gameOver = false;
@@ -42,25 +42,25 @@ public class Model {
 
         for (int i = 0; i < 4; i++) {
             if (shotArray[i] == null) {
-                System.out.println("tipX:" + p1.getTip()[0]);
-                System.out.println("tipY:" + p1.getTip()[1]);
-                shotArray[i] = new Shot(p1.getTip(), p1.getAngle(), p1.getDx(), p1.getDy());
+                System.out.println("tipX:" + player.getTip()[0]);
+                System.out.println("tipY:" + player.getTip()[1]);
+                shotArray[i] = new Shot(player.getTip(), player.getAngle(), player.getDx(), player.getDy());
                 break;
             }
         }
-        System.out.println("angle :" + p1.getAngle());
+        System.out.println("angle :" + player.getAngle());
     }
 
     public void playerFire() {
-        if (p1.isGunsReady()) {
-            p1.shoot();
+        if (player.isGunsReady()) {
+            player.shoot();
             createShot();
         }
     }
 
 
-    public Player getP1() {
-        return p1;
+    public Player getPlayer() {
+        return player;
     }
 
     /**
@@ -75,11 +75,11 @@ public class Model {
     }
 
     private void updateTimers() {
-        p1.decTimers();
+        player.decTimers();
     }
 
     private void updateObjectPositioning() {
-        p1.updatePlayerPos();
+        player.updatePlayerPos();
 
         updateShotsPositioning();
         updateAsteroidPositioning();
@@ -218,7 +218,7 @@ public class Model {
             /* calculate difference between the position of the middlepoint of the player and the center of
             an asteroid */
                 difference = MyMath.vectorSubtraction(
-                        new double[]{p1.getPosX(), p1.getPosY()},
+                        new double[]{player.getPosX(), player.getPosY()},
                         new double[]{asteroidArr[i].getPosX(), asteroidArr[i].getPosY()}
                 );
 

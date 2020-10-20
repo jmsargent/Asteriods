@@ -5,19 +5,19 @@ import java.awt.geom.Line2D;
 
 public class SpaceObject {
 
-    private int sizeX,sizeY;
+    private int sizeX, sizeY;
     private Polygon blueprint;
     private int life;
     private double posX;
     private double posY;
-    private int radius; // used to create hitbox
 
     // velocity vars
     private double dx, dy;
 
 
     // This should exist fix it
-    public void move(){
+    public void move() {
+
     }
 
     /* TODO
@@ -30,10 +30,6 @@ public class SpaceObject {
     6) Skapa move som metod till SpaceObject
     7) Snälla gör alla kordinater till int, det finns inga decimala pixlar
      */
-
-    public int getRadius() {
-        return radius;
-    }
 
     public void updatePos() {
 
@@ -49,11 +45,9 @@ public class SpaceObject {
         if (this.posY > 600 + this.sizeY)
             this.posY = -this.sizeY;
         if (this.posY < -this.sizeY)
-            this.posY = 600+this.sizeY;
+            this.posY = 600 + this.sizeY;
 
     }
-
-
 
     public Polygon getBlueprint() {
         return blueprint;
@@ -120,15 +114,15 @@ class Asteroid extends SpaceObject {
 
 class Shot extends SpaceObject {
 
-    private double drawFromX,drawFromY;
-    private final int shotSize=6;
+    private double drawFromX, drawFromY;
+    private final int shotSize = 6;
     private boolean isOutOfBounds;
     private double shotAngle;
 
 
-    public Shot(double[] tip, double angle, double dx, double dy){
+    public Shot(double[] tip, double angle, double dx, double dy) {
         setShotSpeed(angle);
-        setPos(tip[0],tip[1],angle);
+        setPos(tip[0], tip[1], angle);
         this.shotAngle = angle; // vet att det här är fult
         this.isOutOfBounds = false;
     }
@@ -145,13 +139,13 @@ class Shot extends SpaceObject {
         return drawFromY;
     }
 
-    private void setShotSpeed(double angle){
+    private void setShotSpeed(double angle) {
 
         double angle2 = angle + 90;
 
         double[] temp = new double[2];
 
-        temp = MyMath.toCartesian(angle2,5);
+        temp = MyMath.toCartesian(angle2, 5);
 
         System.out.println("dx:");
 
@@ -159,11 +153,11 @@ class Shot extends SpaceObject {
         this.setDy(temp[1]);
     }
 
-    private void setPos(double x, double y,double angle){
+    private void setPos(double x, double y, double angle) {
 
         // Remember that Coordinates work differently than expected when using computer graphics (y inverted)
 
-        if(angle > 0 ||angle < 90){
+        if (angle > 0 || angle < 90) {
 
         }
 
@@ -173,46 +167,47 @@ class Shot extends SpaceObject {
 
 
     // Does not use polygons hence the different implementation
-    private void setBluePrint(){
+    private void setBluePrint() {
 
-        double[] dir = MyMath.scaleToLen(this.shotSize,new double[] {this.getDx(),this.getDy()});
+        double[] dir = MyMath.scaleToLen(this.shotSize, new double[]{this.getDx(), this.getDy()});
 
         this.drawFromX = this.getPosX() - dir[0];
         this.drawFromY = this.getPosY() - dir[1];
     }
 
-    public void move(){
-        this.setPosX(this.getPosX()+this.getDx());
-        this.setPosY(this.getPosY()+this.getDy());
+    public void move() {
+        this.setPosX(this.getPosX() + this.getDx());
+        this.setPosY(this.getPosY() + this.getDy());
 
         updateOutOfBounds();
 
         setBluePrint();
     }
 
-    private void updateOutOfBounds(){
+    private void updateOutOfBounds() {
 
-        if(this.getPosX()-this.shotSize < 0 || this.getPosX()+this.shotSize > 600 ||
-           this.getPosY()-this.shotSize < 0 || this.getPosY()+this.shotSize > 600){
+        if (this.getPosX() - this.shotSize < 0 || this.getPosX() + this.shotSize > 600 ||
+                this.getPosY() - this.shotSize < 0 || this.getPosY() + this.shotSize > 600) {
             this.isOutOfBounds = true;
         }
 
     }
+
+    public int[] getBluePrint() {
+        return new int[]{
+                (int) drawFromX, (int) drawFromY,
+                (int) getPosX(),  (int) getPosY()
+        };
+    }
 }
 
-class Spaceship extends SpaceObject {
 
-
-}
-
-
-class Player extends Spaceship {
-
+class Player extends SpaceObject {
 
 
     private double[] xPoints;
     private double[] yPoints;
-    private int nPoints,gunsReadyTimer;
+    private int nPoints, gunsReadyTimer;
     private int[] rXPoints, rYPoints;
     private double angle;
     private boolean gunsReady; // limits rate of fire
@@ -223,7 +218,6 @@ class Player extends Spaceship {
         this.angle = 0;
 
         this.gunsReadyTimer = 15; // 1/3 sec rate of fire
-
 
         // make doubles later
         this.setPosX(posX);
@@ -253,21 +247,21 @@ class Player extends Spaceship {
         this.gunsReady = gunsReady;
     }
 
-    public double[] getTip(){
-        return new double[] {this.getPosX() + xPoints[0],this.getPosY() + yPoints[0]};
+    public double[] getTip() {
+        return new double[]{this.getPosX() + xPoints[0], this.getPosY() + yPoints[0]};
     }
 
-    public void shoot(){
+    public void shoot() {
         this.gunsReady = false;
         System.out.println("pewpew");
     }
 
-    public void decTimers(){
+    public void decTimers() {
 
-        if(!this.gunsReady){
-            this.gunsReadyTimer --;
+        if (!this.gunsReady) {
+            this.gunsReadyTimer--;
 
-            if(gunsReadyTimer == 0){
+            if (gunsReadyTimer == 0) {
                 this.gunsReady = true;
                 this.gunsReadyTimer = 15;
                 System.out.println("Guns ready");
@@ -304,8 +298,8 @@ class Player extends Spaceship {
         this.rXPoints = MyMath.roundedIntArray(this.xPoints, this.xPoints.length);
         this.rYPoints = MyMath.roundedIntArray(this.yPoints, this.yPoints.length);
 
-
-        Polygon p = new Polygon(MyMath.arrayConstAddition(this.rXPoints, MyMath.roundToNearestInt(this.getPosX())),
+        Polygon p = new Polygon(
+                MyMath.arrayConstAddition(this.rXPoints, MyMath.roundToNearestInt(this.getPosX())),
                 MyMath.arrayConstAddition(this.rYPoints, MyMath.roundToNearestInt(this.getPosY())),
                 3);
 
@@ -359,13 +353,4 @@ class Player extends Spaceship {
         this.setDy(this.getDy() + vector[0]);
     }
 
-    /*
-    public void hyperDrive(){
-    }*/
 }
-
-/*
-class UFO extends Spaceship{
-
-}
- */
