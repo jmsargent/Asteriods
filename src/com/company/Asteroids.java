@@ -1,14 +1,14 @@
 package com.company;
 
-public class Main {
-
-
+public class Asteroids {
 
     // http://www.classicgaming.cc/classics/asteroids/graphics
 
     public static void main(String[] args) {
-        View view = new View();
+	// write your code here
         Model model = new Model();
-	    Controller controller = new Controller(model, view);
+        View view = new View(model);
+
+        Controller controller = new Controller(view, model);
     }
 }

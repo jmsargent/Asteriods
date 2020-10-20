@@ -2,87 +2,92 @@ package com.company;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.Toolkit.*;
 import java.awt.event.KeyListener;
 
 public class View extends JFrame {
 
-    public View() {
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setWindowSize();
-        Space space = new Space();
-        
+    // class vars
+    private Model model;
+    private Space space;
+    private KeyListener k;
+
+    // constructors
+
+    public View(Model model) {
+
+        this.model = model;
+        this.space = new Space();
         this.add(space);
+
+        // basic settings for Jframe
+        this.setSize(600, 600);
         this.setVisible(true);
+        this.setFocusable(true);
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-    /**
-     * Sets the size of the window to half of the resolution width and height
-     */
-    private void setWindowSize() {
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        double width = screenSize.getWidth() / 2;
-        double height = screenSize.getHeight() / 2;
+    public void updateCanvas() {
+        this.space.repaint();
     }
 
-    private static class Space extends JPanel {
-
+    private class Space extends JPanel {
 
         @Override
-        public void paintComponent(Graphics g) {
+        protected void paintComponent(Graphics g) {
+
             super.paintComponent(g);
-            // draw stuff
-            g.drawOval(50, 50, 50, 50);
-            drawPlayer(100, 100, g);
+            super.setBackground(Color.BLACK);
+
+            drawSO(g);
+
+            if (model.isGameOver())
+                paintGameOver(g);
         }
 
-        /**
-         * Draws the player ship
-         *
-         * @param x X coordinate for ship nose
-         * @param y Y coordinate for ship nose
-         */
-        private static void drawPlayer(int x, int y, Graphics g) {
+        private void drawSO(Graphics g) {
+            g.setColor(Color.RED);
+            drawPlayer(g);
 
-            Polygon p = new Polygon();
+            g.setColor(Color.GREEN);
+            drawShots(g);
 
-            // Create triangle
-
-            p.addPoint(x,y);
-            p.addPoint(x+5,y-10);
-            p.addPoint(x-5,y-10);
-
-            // Draw polygon only takes arrays
-            g.fillPolygon(p);
-
+            g.setColor(Color.CYAN);
+            drawAsteroids(g);
         }
 
-        /**
-         * @param x x cordinate for the center of the asteroid
-         * @param y y coordinate for the center of the asteroid
-         */
-
-        private static void drawAsteroid(int x, int y, int size, Graphics g) {
-            g.drawOval(x, y, size, size);
+        private void drawPlayer(Graphics g) {
+            g.fillPolygon(model.getPlayer().getBlueprint());
         }
 
-        /**
-         * @param y      x Coordinate for the tip of the shot
-         * @param x      x Coordinate for the tip of the shot
-         * @param length Length of projektile
-         */
+        private void drawShots(Graphics g) {
 
-        private static void drawShot(int x, int y, int length) {
+            int[] points;
 
+            for (Shot shot : model.getShotArray()) {
+
+                if (shot != null) {
+                    points = shot.getBluePrint();
+                    g.drawLine(points[0], points[1], points[2], points[3]);
+                }
+            }
         }
 
-        private static void drawUFO() {
+        private void drawAsteroids(Graphics g) {
 
+            for (Asteroid asteroid : model.getAsteroidArr()) {
+                if (asteroid != null) {
+                    g.fillOval(
+                            (int) asteroid.getPosX(), (int) asteroid.getPosY(),
+                            asteroid.getLife() * 33, asteroid.getLife() * 33
+                    );
+                }
+            }
         }
 
-        private static void drawWormhole() {
-
+        private void paintGameOver(Graphics g) {
+            super.setBackground(Color.WHITE);
+            g.setColor(Color.BLACK);
+            g.drawString("Game Over", 300, 300);
         }
-
     }
 }

@@ -1,86 +1,81 @@
 package com.company;
 
-
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.sql.SQLOutput;
 
-public class Controller {
+public class Controller{
 
-    private Model model;
+    /*
+    TODO:
+    1) handle multiple simultaneous keystrokes
+     */
+
+    private javax.swing.Timer timer;
     private View view;
+    private Model model;
 
-
-    public Controller(Model model, View view){
-        this.model = model;
+    public Controller(View view, Model model){
         this.view = view;
+        view.addKeyListener(keyListener);
+        this.model = model;
 
+        timer = new javax.swing.Timer(22, actionListener);
+        timer.start();
     }
 
+    private ActionListener actionListener = new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            model.tick();
+            view.updateCanvas();
+        }
+    };
 
-    /**
-     * Identifies what keys are pressed/released and forwards to correct game functionality.
-     * @param e
-     * @param identifier
-     */
-    private void handleInput(KeyEvent e,String identifier){
-
-        int id = e.getID(); // what type of keyEvent
-        char c;
-
-
-        // Since getKeyChar is only reliable from the method KeyTyped, returns caps-sensitive key
-        if(id == KeyEvent.KEY_TYPED){c = e.getKeyChar();
-            System.out.println(e.getKeyChar());
-            System.out.println("keyPressed");
-        }else{
-            switch ( e.getKeyCode() ){
-                case( KeyEvent.VK_W ):
-                    System.out.println("keyPressed2");
-
-                    System.out.println(e.getKeyCode());
-                    System.out.println(e.getKeyCode());
-                    break;
-                case( KeyEvent.VK_S ):
-                    System.out.println("keyPressed2");
-                    System.out.println(e.getKeyCode());
-                    break;
-                case( KeyEvent.VK_A ):
-                    System.out.println("keyPressed2");
-                    System.out.println(e.getKeyCode());
-                    break;
-                case( KeyEvent.VK_D ):
-                    System.out.println("keyPressed2");
-                    System.out.println(e.getKeyCode());
-                    break;
-                case( KeyEvent.VK_SPACE ):
-                    System.out.println("keyPressed2");
-                    System.out.println(e.getKeyCode());
-                    break;
-            }
-
+    private KeyListener keyListener = new KeyListener() {
+        @Override
+        public void keyTyped(KeyEvent e) {
+            handleInput(e, "keyTyped");
         }
 
-        // e.VK_ static fields containing all keybindings
+        @Override
+        public void keyPressed(KeyEvent e) {
+            handleInput(e, "keyPressed");
+        }
 
+        @Override
+        public void keyReleased(KeyEvent e) {
+            handleInput(e, "keyReleased");
+        }
+    };
 
+    private void handleInput(KeyEvent e, String metodId){
+        //System.out.println(metodId);
+        System.out.println( e.getKeyCode()) ;
+        //27
+        switch (e.getKeyCode()){
+            case (37): // right arrow
+                model.getPlayer().rotateShip("right");
+                break;
+            case(39): // left arrow
+                model.getPlayer().rotateShip("left");
+                break;
+            case(38): // uparrow
+                model.getPlayer().accelerate(1);
+                break;
+            case(32): // if spacebar
+                model.playerFire();
+                break;
+            case(27): // if esc
+                System.exit(0);
+        }
 
-
-    }
-
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        handleInput(e,"keyTyped");
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        handleInput(e,"keyPressed");
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        handleInput(e,"keyReleased");
+        /*
+        case(40):
+        model.getP1().accelerate(-1);
+        break;
+        */
     }
 }
+// https://academo.org/demos/rotation-about-point/
