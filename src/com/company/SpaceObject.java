@@ -21,14 +21,12 @@ public class SpaceObject {
     }
 
     /* TODO
-    1) fixa grafisk model för spaceObjects
     2) översätt angle från rad till deg
     3) Ändra hårdkodning för dx (som är inverterad)
     4) skapa metod move i spaceObject som rör objekt i dess velocitets
        riktining, samt tar hänsyn till objetkets form / storlek
     5) Skapa constructor för player
     6) Skapa move som metod till SpaceObject
-    7) Snälla gör alla kordinater till int, det finns inga decimala pixlar
      */
 
     public void updatePos() {
