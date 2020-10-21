@@ -4,30 +4,49 @@ import java.util.*;
 
 public class Model {
 
+    // classvars
+
+    private List<Shot> shots;
+    private Iterator iterator;
+
+    private List<Asteroid> asteroids;
+
+
     private Shot[] shotArray;
     private boolean gameOver;
     private Asteroid[] asteroidArr;
     Random rand;
     private Player player; //= new Player(300, 300);
-
-
+    int resX,resY;
 
     // constructor
 
     public Model() {
+        resX = 300;
+        resY = 300;
         // initiate player in middle of screen
         player = new Player(300, 300);
+
         shotArray = new Shot[4];
+
+        shots = new LinkedList<>();
+        asteroids = new LinkedList<>(); // fixa resten med asteroids
+
         rand = new Random();
         gameOver = false;
-        spawnAsteroids(4, 3);
-
-        for (int i = 0; i < 4; i++) {
-            shotArray[i] = null;
-        }
+        //spawnAsteroids(4, 3);
+        createAsteroids(4,3);
     }
 
     // getters & setters
+
+    public List<Asteroid> getAsteroids() {
+        return asteroids;
+    }
+
+    public List<Shot> getShots() {
+        return shots;
+    }
 
     public boolean isGameOver() {
         return gameOver;
@@ -51,16 +70,7 @@ public class Model {
      * Creates shot in first empty position of array if there are any empty slots
      */
     private void createShot() {
-
-        for (int i = 0; i < 4; i++) {
-            if (shotArray[i] == null) {
-                System.out.println("tipX:" + player.getTip()[0]);
-                System.out.println("tipY:" + player.getTip()[1]);
-                shotArray[i] = new Shot(player.getTip(), player.getAngle(), player.getDx(), player.getDy());
-                break;
-            }
-        }
-        System.out.println("angle :" + player.getAngle());
+        shots.add(new Shot(player.getTip(), player.getAngle(), player.getDx(), player.getDy()));
     }
 
     public void playerFire() {
@@ -95,37 +105,60 @@ public class Model {
     }
 
     private void updateAsteroidPositioning() {
-        for (int i = 0; i < this.asteroidArr.length; i++) {
-            if (this.getAsteroidArr()[i] != null) {
-                this.asteroidArr[i].updatePos();
-            }
-        }
+
+        
+
+
+
     }
 
     /**
      * updates position of all shots
      */
     private void updateShotsPositioning() {
-        for (int i = 0; i < 4; i++) {
-            if (shotArray[i] != null) {
-                shotArray[i].move();
 
-                if (shotArray[i].isOutOfBounds()) {
-                    shotArray[i] = null;
-                }
-            }
+        // this can be combined with asteroids for nicer looking code
+
+        iterator = this.shots.iterator();
+
+        while(iterator.hasNext()){
+            Shot s = (Shot) iterator.next();
+            s.move();
+
+            if (s.isOutOfBounds())
+                iterator.remove();
         }
+
+    }
+
+    private void createAsteroids (int amount, int lives){
+
+        int pos[] = findValidSpawnLocation();
+        double vel[] = generateRNDvel();
+
+
+        for (int i = 0; i < amount; i++) {
+
+            asteroids.add(new Asteroid(pos[0],pos[1],vel[0],vel[1],lives));
+
+            pos = findValidSpawnLocation();
+            vel = generateRNDvel();
+        }
+    }
+
+
+
+    private void replaceAsteroid(int x, int y, int lives){
+
     }
 
     private void spawnAsteroids(int nrOfAsteroids, int lives) {
 
         int[] validSpawnLocation = findValidSpawnLocation();
-        double[] randomVelocity = generateRNDvel();
-
-        this.asteroidArr = new Asteroid[nrOfAsteroids * lives];
 
         for (int i = 0; i < nrOfAsteroids; ++i) {
             createNewAsteroids(1, lives, validSpawnLocation);
+
             validSpawnLocation = findValidSpawnLocation();
         }
     }
@@ -176,14 +209,14 @@ public class Model {
     private double[] generateRNDvel() {
 
         // I had to, sorry , I know it doesn't follow conventions
-        double MaxWell = 1.2;
+        double Maxwell = 1.2;
 
-        return new double[]{(0.5 + rand.nextDouble()) % MaxWell, (0.5 + rand.nextDouble()) % MaxWell};
+        return new double[]{(0.5 + rand.nextDouble()) % Maxwell, (0.5 + rand.nextDouble()) % Maxwell};
     }
 
     private void calcColissions() {
-        calcShotAsteroidCollision();
-        calcPlayerAsteroidCollision();
+       // calcShotAsteroidCollision();
+        // calcPlayerAsteroidCollision();
     }
 
     private void calcShotAsteroidCollision() {

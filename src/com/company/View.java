@@ -25,6 +25,7 @@ public class View extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
+    // general methods
     public void updateCanvas() {
         this.space.repaint();
     }
@@ -62,31 +63,30 @@ public class View extends JFrame {
 
             int[] points;
 
-            for (Shot shot : model.getShotArray()) {
+            for (Shot shot : model.getShots()) {
 
-                if (shot != null) {
-                    points = shot.getBluePrint();
-                    g.drawLine(points[0], points[1], points[2], points[3]);
-                }
+                points = shot.getBluePrint();
+                g.drawLine(points[0], points[1], points[2], points[3]);
             }
         }
 
         private void drawAsteroids(Graphics g) {
 
-            for (Asteroid asteroid : model.getAsteroidArr()) {
-                if (asteroid != null) {
-                    g.fillOval(
-                            (int) asteroid.getPosX(), (int) asteroid.getPosY(),
-                            asteroid.getLife() * 33, asteroid.getLife() * 33
-                    );
-                }
+            for (Asteroid asteroid : model.getAsteroids()) {
+
+                g.fillOval(
+                        (int) asteroid.getPosX(), (int) asteroid.getPosY(),
+                        asteroid.getLife() * 33, asteroid.getLife() * 33);
+
             }
         }
+
 
         private void paintGameOver(Graphics g) {
             super.setBackground(Color.WHITE);
             g.setColor(Color.BLACK);
             g.drawString("Game Over", 300, 300);
         }
+
     }
 }
