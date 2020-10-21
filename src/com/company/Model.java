@@ -10,13 +10,9 @@ public class Model {
     Random rand;
     private Player player; //= new Player(300, 300);
 
-    public boolean isGameOver() {
-        return gameOver;
-    }
 
-    public Asteroid[] getAsteroidArr() {
-        return asteroidArr;
-    }
+
+    // constructor
 
     public Model() {
         // initiate player in middle of screen
@@ -31,9 +27,25 @@ public class Model {
         }
     }
 
+    // getters & setters
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Asteroid[] getAsteroidArr() {
+        return asteroidArr;
+    }
+
     public Shot[] getShotArray() {
         return shotArray;
     }
+
+    // other methods ...
 
     /**
      * Creates shot in first empty position of array if there are any empty slots
@@ -52,16 +64,13 @@ public class Model {
     }
 
     public void playerFire() {
-        if (player.isGunsReady()) {
+        if (player.isGunsReady() && !isGameOver()) {
             player.shoot();
             createShot();
         }
     }
 
 
-    public Player getPlayer() {
-        return player;
-    }
 
     /**
      * Updates positioning and potentially adds / removes objects
@@ -110,26 +119,26 @@ public class Model {
 
     private void spawnAsteroids(int nrOfAsteroids, int lives) {
 
-        int[] validSpawnLocation = getValidSpawnLocation();
-        double[] randomVelocity = getRndBigVel();
+        int[] validSpawnLocation = findValidSpawnLocation();
+        double[] randomVelocity = generateRNDvel();
 
         this.asteroidArr = new Asteroid[nrOfAsteroids * lives];
 
         for (int i = 0; i < nrOfAsteroids; ++i) {
             createNewAsteroids(1, lives, validSpawnLocation);
-            validSpawnLocation = getValidSpawnLocation();
+            validSpawnLocation = findValidSpawnLocation();
         }
     }
 
     private void createNewAsteroids(int nrOfAsteroids, int lives, int[] spawnLocation) {
 
         int asteroidstoCreate = nrOfAsteroids;
-        double[] randomVelocity = getRndBigVel();
+        double[] randomVelocity = generateRNDvel();
         for (int i = 0; i < this.asteroidArr.length; i++) {
             if (this.asteroidArr[i] == null) {
                 // note for self : x,y,dx,dy
                 this.asteroidArr[i] = new Asteroid(spawnLocation[0], spawnLocation[1], randomVelocity[0], randomVelocity[1], lives);
-                randomVelocity = getRndBigVel();
+                randomVelocity = generateRNDvel();
                 asteroidstoCreate --;
 
                 if(asteroidstoCreate == 0)
@@ -143,7 +152,7 @@ public class Model {
      *
      * @return
      */
-    private int[] getValidSpawnLocation() {
+    private int[] findValidSpawnLocation() {
 
         // 1-north 2-east 3-west 4-south
 
@@ -164,7 +173,7 @@ public class Model {
         }
     }
 
-    private double[] getRndBigVel() {
+    private double[] generateRNDvel() {
 
         // I had to, sorry , I know it doesn't follow conventions
         double MaxWell = 1.2;

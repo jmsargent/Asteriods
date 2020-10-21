@@ -9,7 +9,6 @@ public class View extends JFrame {
     // class vars
     private Model model;
     private Space space;
-    private KeyListener k;
 
     // constructors
 

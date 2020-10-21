@@ -5,22 +5,16 @@ import java.awt.geom.Line2D;
 
 public class SpaceObject {
 
+    // class vars
+
     private int sizeX, sizeY;
     private Polygon blueprint;
     private int life;
     private double posX;
     private double posY;
-
-    // velocity vars
     private double dx, dy;
 
-
-    // This should exist fix it
-    public void move() {
-
-    }
-
-    /* TODO
+        /* TODO
     2) översätt angle från rad till deg
     3) Ändra hårdkodning för dx (som är inverterad)
     4) skapa metod move i spaceObject som rör objekt i dess velocitets
@@ -29,23 +23,7 @@ public class SpaceObject {
     6) Skapa move som metod till SpaceObject
      */
 
-    public void updatePos() {
 
-        this.posX = this.posX + this.dx;
-        this.posY = this.posY + this.dy;
-
-
-        if (this.posX > 600 + this.sizeX)
-            this.posX = -this.sizeX;
-        if (this.posX < -this.sizeX)
-            this.posX = 600 + this.sizeX;
-
-        if (this.posY > 600 + this.sizeY)
-            this.posY = -this.sizeY;
-        if (this.posY < -this.sizeY)
-            this.posY = 600 + this.sizeY;
-
-    }
 
     public Polygon getBlueprint() {
         return blueprint;
@@ -94,6 +72,34 @@ public class SpaceObject {
     public void setDy(double dy) {
         this.dy = dy;
     }
+
+
+    // general methods
+
+    // This should exist fix it
+    public void move() {
+
+    }
+
+
+    public void updatePos() {
+
+        this.posX = this.posX + this.dx;
+        this.posY = this.posY + this.dy;
+
+
+        if (this.posX > 600 + this.sizeX)
+            this.posX = -this.sizeX;
+        if (this.posX < -this.sizeX)
+            this.posX = 600 + this.sizeX;
+
+        if (this.posY > 600 + this.sizeY)
+            this.posY = -this.sizeY;
+        if (this.posY < -this.sizeY)
+            this.posY = 600 + this.sizeY;
+
+    }
+
 }
 
 class Asteroid extends SpaceObject {
@@ -112,11 +118,14 @@ class Asteroid extends SpaceObject {
 
 class Shot extends SpaceObject {
 
+    // class vars
+
     private double drawFromX, drawFromY;
     private final int shotSize = 6;
     private boolean isOutOfBounds;
     private double shotAngle;
 
+    // constructor(s)
 
     public Shot(double[] tip, double angle, double dx, double dy) {
         setShotSpeed(angle);
@@ -124,6 +133,8 @@ class Shot extends SpaceObject {
         this.shotAngle = angle; // vet att det här är fult
         this.isOutOfBounds = false;
     }
+
+    // getters & setters
 
     public boolean isOutOfBounds() {
         return isOutOfBounds;
@@ -163,6 +174,12 @@ class Shot extends SpaceObject {
         this.setPosY(y);
     }
 
+    public int[] getBluePrint() {
+        return new int[]{
+                (int) drawFromX, (int) drawFromY,
+                (int) getPosX(),  (int) getPosY()
+        };
+    }
 
     // Does not use polygons hence the different implementation
     private void setBluePrint() {
@@ -172,6 +189,8 @@ class Shot extends SpaceObject {
         this.drawFromX = this.getPosX() - dir[0];
         this.drawFromY = this.getPosY() - dir[1];
     }
+
+    // general methods
 
     public void move() {
         this.setPosX(this.getPosX() + this.getDx());
@@ -191,17 +210,13 @@ class Shot extends SpaceObject {
 
     }
 
-    public int[] getBluePrint() {
-        return new int[]{
-                (int) drawFromX, (int) drawFromY,
-                (int) getPosX(),  (int) getPosY()
-        };
-    }
+
 }
 
 
 class Player extends SpaceObject {
 
+    // class vars
 
     private double[] xPoints;
     private double[] yPoints;
@@ -233,6 +248,12 @@ class Player extends SpaceObject {
         updatePlayerPolygon();
     }
 
+    // getters & setters
+
+    public void setGunsReady(boolean gunsReady) {
+        this.gunsReady = gunsReady;
+    }
+
     public double getAngle() {
         return angle;
     }
@@ -241,13 +262,12 @@ class Player extends SpaceObject {
         return gunsReady;
     }
 
-    public void setGunsReady(boolean gunsReady) {
-        this.gunsReady = gunsReady;
-    }
 
     public double[] getTip() {
         return new double[]{this.getPosX() + xPoints[0], this.getPosY() + yPoints[0]};
     }
+
+    // general methods
 
     public void shoot() {
         this.gunsReady = false;
@@ -267,7 +287,6 @@ class Player extends SpaceObject {
         }
 
     }
-
 
     // its quirky that this and move in shots exists simoltaneously
     public void updatePlayerPos() {
@@ -337,7 +356,6 @@ class Player extends SpaceObject {
         this.xPoints = xyMerged[0];
         this.yPoints = xyMerged[1];
     }
-
 
     public void accelerate(int dir) {
         double[] vector, maxVector;
