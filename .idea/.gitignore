@@ -7,4 +7,4 @@
 # Editor-based HTTP Client requests
 /httpRequests/
 # Properly ignores everything found in the "out"-folder. Wherever it may be, may be.
-/out/
+\*/out/

@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.HashSet;
+import java.util.Set;
 
-public class Controller{
+public class Controller {
 
     /*
     TODO:
@@ -15,12 +17,13 @@ public class Controller{
     private javax.swing.Timer timer;
     private View view;
     private Model model;
+    private Set<Integer> controlPressed;
 
-    public Controller(View view, Model model){
+    public Controller(View view, Model model) {
         this.view = view;
         view.addKeyListener(keyListener);
         this.model = model;
-
+        controlPressed = new HashSet<>();
         timer = new javax.swing.Timer(22, actionListener);
         timer.start();
     }
@@ -36,46 +39,41 @@ public class Controller{
     private KeyListener keyListener = new KeyListener() {
         @Override
         public void keyTyped(KeyEvent e) {
-            handleInput(e, "keyTyped");
+            //handleInput(e, "keyTyped"); //Not currently in use
         }
 
         @Override
         public void keyPressed(KeyEvent e) {
-            handleInput(e, "keyPressed");
+            handleInput(e.getKeyCode(), true);
         }
 
         @Override
         public void keyReleased(KeyEvent e) {
-            handleInput(e, "keyReleased");
+            handleInput(e.getKeyCode(), false);
         }
     };
 
-    private void handleInput(KeyEvent e, String metodId){
-        //System.out.println(metodId);
-        System.out.println( e.getKeyCode()) ;
-        //27
-        switch (e.getKeyCode()){
-            case (37): // right arrow
-                model.getPlayer().rotateShip("right");
-                break;
-            case(39): // left arrow
-                model.getPlayer().rotateShip("left");
-                break;
-            case(38): // uparrow
-                model.getPlayer().accelerate(1);
-                break;
-            case(32): // if spacebar
-                model.playerFire();
-                break;
-            case(27): // if esc
-                System.exit(0);
+    private void handleInput(int e, boolean press) {
+        controlPressed.forEach(i -> {
+            switch (i) {
+                case (37) -> model.getPlayer().rotateShip("right");     // right arrow
+                case (39) -> model.getPlayer().rotateShip("left");      // left arrow
+                case (38) -> model.getPlayer().accelerate(1);           // uparrow
+                case (32) -> model.playerFire();                            // if spacebar
+                case (27) -> System.exit(0);                          // if esc
+                //case(40) -> model.getPlayer().accelerate(-1);
+
+
+            }
+        });
+
+        if (press) {
+            controlPressed.add(e);
+            System.out.println(e + " has been added");
+        } else {
+            controlPressed.remove(e);
         }
 
-        /*
-        case(40):
-        model.getP1().accelerate(-1);
-        break;
-        */
     }
 }
 // https://academo.org/demos/rotation-about-point/
